@@ -16,7 +16,6 @@ const loadingSlice = createSlice({
       }
     },
     handleTurnOnLoading: (state, action) => {
-      // mở loading khi loading đang false
       if (!state.isLoading) {
         state.isLoading = true;
       }
