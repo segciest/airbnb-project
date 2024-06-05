@@ -1,13 +1,13 @@
 import useRouteCustom from "./routes/useRouteCustom";
 import { message } from "antd";
 import { createContext } from "react";
-import { Loading } from "./components/Loading/Loading";
+// import { Loading } from "./components/Loading/Loading";
 import { useSelector } from "react-redux";
 
 export const AlertContext = createContext();
 
 function App() {
-  const { isLoading } = useSelector((state) => state.loadingSlice);
+  // const { isLoading } = useSelector((state) => state.loadingSlice);
   const [messageApi, contextHolder] = message.useMessage();
   const myRoutes = useRouteCustom();
   const handleAlert = (type, content) => {
@@ -16,7 +16,7 @@ function App() {
   return (
     <AlertContext.Provider value={{ handleAlert }}>
       {contextHolder}
-      {isLoading && <Loading />}
+      {/* {isLoading && <Loading />} */}
       {myRoutes}
     </AlertContext.Provider>
   );

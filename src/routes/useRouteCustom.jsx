@@ -3,6 +3,8 @@ import { path } from "../common/path";
 import HomeTemplate from "../templates/HomeTemplate/HomeTemplate";
 import HomePage from "../pages/HomePage/HomePage";
 import NotFound from "../layout/NotFound/NotFound";
+import AdminTemplate from "../templates/AdminTemplate/AdminTemplate";
+import UserManagement from "../pages/UserManagement/UserManagement";
 
 const useRouteCustom = () => {
   const route = useRoutes([
@@ -26,6 +28,14 @@ const useRouteCustom = () => {
         },
       ],
     },
+    {
+      path: path.admin,
+      element: <AdminTemplate/>,
+      children:[{
+        index: true,
+        element: <UserManagement/>
+      }]
+    }
   ]);
   return route;
 };
