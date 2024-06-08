@@ -1,16 +1,13 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import {
-  handleTurnOnLoading,
-  handleTurnOffLoading,
-} from "../../redux/slice/loadingSlice";
+import React from 'react';
+import Banner from '../../layout/Banner/Banner';
+import SearchLocation from '../../layout/SearchLocation/SearchLocation';
 const HomePage = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(handleTurnOnLoading());
-    dispatch(handleTurnOffLoading());
-  }, []);
-  return <div>HomePage</div>;
+  return (
+    <>
+      <Banner />
+      <SearchLocation />
+    </>
+  );
 };
 
 export default HomePage;

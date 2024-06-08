@@ -1,0 +1,198 @@
+import { format } from 'date-fns';
+import React, { useEffect, useRef, useState } from 'react';
+import { DateRangePicker } from 'react-date-range';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import './SearchLocation.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import {
+  setDateRange,
+  setLocatedAt,
+  setNumPeople,
+} from '../../redux/slice/searchSlice';
+import moment from 'moment';
+import { viTriServ } from '../../services/viTriServ';
+
+const SearchLocation = () => {
+  const [openDate, setOpenDate] = useState(false);
+  const [showGuestControls, setShowGuestControls] = useState(false);
+  const [locations, setLocations] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+  const datePickerRef = useRef(null);
+  const guestPickerRef = useRef(null);
+  const locationRef = useRef(null);
+  const handleClickOutside = (event) => {
+    if (
+      datePickerRef.current &&
+      !datePickerRef.current.contains(event.target)
+    ) {
+      setOpenDate(false);
+    }
+    if (
+      guestPickerRef.current &&
+      !guestPickerRef.current.contains(event.target)
+    ) {
+      setShowGuestControls(false);
+    }
+    if (locationRef.current && !locationRef.current.contains(event.target)) {
+      setShowLocationDropdown(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [openDate, showGuestControls, showLocationDropdown]);
+
+  const { locatedAt, dateRange, numPeople } = useSelector(
+    (state) => state.searchSlice
+  );
+  const navigate = useNavigate();
+  const handleOpenDate = () => {
+    setOpenDate(!openDate);
+  };
+  const handleGuestClick = () => {
+    setShowGuestControls(!showGuestControls);
+  };
+  const handleGuestChange = (change) => {
+    const newGuestCount = numPeople + change;
+    if (newGuestCount > 0) {
+      dispatch(setNumPeople(newGuestCount));
+    }
+  };
+  useEffect(() => {
+    viTriServ.getViTri().then((res) => {
+      setLocations(res.data.content);
+    });
+  }, []);
+  const handleLocationSelect = (location) => {
+    dispatch(setLocatedAt(location.tinhThanh));
+    setSelectedLocation(location.tinhThanh);
+    setShowLocationDropdown(false);
+  };
+  const dispatch = useDispatch();
+  return (
+    <section className="search-location relative py-10">
+      <div className="container relative">
+        <div className="grid lg:grid-cols-12 sm:grid-cols-1 border-2 border-gray-300 md:rounded-full">
+          <div className="col-span-3 flex flex-col justify-center items-center cursor-pointer flex-1 px-6 py-3">
+            <p className="text-sm">Location</p>
+            <div className="md:hidden sm:border-b sm:border-gray-400 sm:w-9/12 py-2"></div>
+            <p
+              className="text-sm text-gray-400"
+              onClick={() => setShowLocationDropdown(true)}
+            >
+              {selectedLocation ? selectedLocation : 'Where are you going?'}
+            </p>
+            {showLocationDropdown && (
+              <div
+                className="absolute z-10 top-[58px] left-0 bg-white rounded-lg border-2 border-gray-300 overflow-y-auto max-h-48"
+                ref={locationRef}
+              >
+                <h1 className="text-lg text-center font-medium py-2">
+                  Search for locations
+                </h1>
+                <ul className="grid grid-cols-3 gap-4">
+                  {locations.map((location) => (
+                    <li
+                      key={location.id}
+                      onClick={() => handleLocationSelect(location)}
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                    >
+                      <img
+                        src={location.hinhAnh}
+                        alt={location.tinhThanh}
+                        className="w-20 h-20 rounded-lg mr-2"
+                      />
+                      <span>{location.tinhThanh}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+          <div className="col-span-1 sm:hidden lg:flex justify-center">
+            <div className="my-3 border-l-[1px] border-gray-400"></div>
+          </div>
+          <div
+            className="col-span-3 flex flex-col flex-1 justify-center items-center cursor-pointer relative sm:h-16"
+            onClick={handleOpenDate}
+          >
+            <p>
+              {moment(dateRange[0]?.startDate).format('DD/MM/YYYY')} –
+              {moment(dateRange[0]?.endDate).format('DD/MM/YYYY')}
+            </p>
+            <div className="md:hidden sm:border-gray-400 sm:w-9/12 py-2"></div>
+            {openDate && (
+              <div
+                ref={datePickerRef}
+                className="absolute z-10 top-[70px] left-1/2 transform -translate-x-1/2 bg-white rounded-lg border-2 border-gray-300 overflow-y-auto cursor-auto overflow-hidden"
+                style={{ overscrollBehavior: 'none' }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <DateRangePicker
+                  className="p-6 flex lg:max-h-full lg:w-full sm:w-1/4 sm:h-1/4 overflow-auto"
+                  onChange={(item) => dispatch(setDateRange([item.selection]))}
+                  ranges={dateRange}
+                  showSelectionPreview={true}
+                  moveRangeOnFirstSelection={false}
+                  months={2}
+                  minDate={new Date()}
+                  direction="horizontal"
+                  rangeColors={['#FD5B61']}
+                  color="#FD5B61"
+                />
+              </div>
+            )}
+          </div>
+          <div className="col-span-1 sm:hidden lg:flex justify-center">
+            <div className="my-3 border-l-[1px] border-gray-400"></div>
+          </div>
+          <div
+            className="col-span-3 flex flex-col justify-center items-center cursor-pointer flex-1 px-6 py-3 relative"
+            onClick={handleGuestClick}
+            ref={guestPickerRef}
+          >
+            <p className="text-sm">Guests</p>
+            <p className="text-sm text-gray-400">{numPeople} guest(s)</p>
+            {showGuestControls && (
+              <div className="absolute z-10 top-[70px] left-1/2 transform -translate-x-1/2 bg-white rounded-lg border-2 border-gray-300 p-3">
+                <div className="flex items-center space-x-8">
+                  <button
+                    className="p-2 border rounded-full bg-[#FD5B61]"
+                    onClick={() => handleGuestChange(-1)}
+                  >
+                    <i className="fa-solid fa-minus text-white"></i>
+                  </button>
+                  <span>{numPeople}</span>
+                  <button
+                    className="p-2 border rounded-full bg-[#FD5B61]"
+                    onClick={() => handleGuestChange(1)}
+                  >
+                    <i className="fa-solid fa-plus text-white"></i>
+                  </button>
+                </div>
+              </div>
+            )}
+            <div className="md:hidden sm:border-gray-400 sm:w-9/12 py-2"></div>
+          </div>
+          <div className="col-span-1 flex justify-center items-center cursor-pointer flex-1">
+            <button
+              className="bg-[#FD5B61] hover:bg-[#cc494e] transition-all text-white rounded-full px-3 py-3 flex items-center space-x-2"
+              onClick={() => navigate('/search')}
+            >
+              <i className="fa-solid fa-magnifying-glass"></i>
+              <span>Search</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default SearchLocation;

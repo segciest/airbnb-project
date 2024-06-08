@@ -1,8 +1,8 @@
-import { useRoutes } from "react-router-dom";
-import { path } from "../common/path";
-import HomeTemplate from "../templates/HomeTemplate/HomeTemplate";
-import HomePage from "../pages/HomePage/HomePage";
-import NotFound from "../layout/NotFound/NotFound";
+import { useRoutes } from 'react-router-dom';
+import { path } from '../common/path';
+import HomeTemplate from '../templates/HomeTemplate/HomeTemplate';
+import HomePage from '../pages/HomePage/HomePage';
+import NotFound from '../layout/NotFound/NotFound';
 
 const useRouteCustom = () => {
   const route = useRoutes([
@@ -16,15 +16,11 @@ const useRouteCustom = () => {
         },
       ],
     },
+
     {
-      path: "*",
-      element: <HomeTemplate />,
-      children: [
-        {
-          index: true,
-          element: <NotFound />,
-        },
-      ],
+      path: '*',
+      index: true,
+      element: <NotFound />,
     },
   ]);
   return route;

@@ -1,5 +1,8 @@
 export const path = {
-  homePage: "/",
-  detail: "/detail",
-  notfound: "/notfound",
+  homePage: '/',
+  detail: '/detail',
+  about: '/about',
+  services: '/services',
+  pricing: '/pricing',
+  contact: '/contact',
 };
