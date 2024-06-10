@@ -79,12 +79,13 @@ const SearchLocation = () => {
     <section className="search-location relative py-10">
       <div className="container relative">
         <div className="grid lg:grid-cols-12 sm:grid-cols-1 border-2 border-gray-300 md:rounded-full">
-          <div className="col-span-3 flex flex-col justify-center items-center cursor-pointer flex-1 px-6 py-3">
+              <div className="col-span-3 flex flex-col justify-center items-center cursor-pointer flex-1 px-6 py-3" 
+              onClick={() => setShowLocationDropdown(true)}
+              >
             <p className="text-sm">Location</p>
             <div className="md:hidden sm:border-b sm:border-gray-400 sm:w-9/12 py-2"></div>
             <p
               className="text-sm text-gray-400"
-              onClick={() => setShowLocationDropdown(true)}
             >
               {selectedLocation ? selectedLocation : 'Where are you going?'}
             </p>
@@ -180,7 +181,7 @@ const SearchLocation = () => {
             )}
             <div className="md:hidden sm:border-gray-400 sm:w-9/12 py-2"></div>
           </div>
-          <div className="col-span-1 flex justify-center items-center cursor-pointer flex-1">
+          <div className="lg:col-span-1 flex justify-center items-center cursor-pointer flex-1 col-span-3 lg:mb-0 mb-3">
             <button
               className="bg-[#FD5B61] hover:bg-[#cc494e] transition-all text-white rounded-full px-3 py-3 flex items-center space-x-2"
               onClick={() => navigate('/search')}
