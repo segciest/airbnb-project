@@ -79,19 +79,21 @@ const SearchLocation = () => {
     <section className="search-location relative py-10">
       <div className="container relative">
         <div className="grid lg:grid-cols-12 sm:grid-cols-1 border-2 border-gray-300 md:rounded-full">
-              <div className="col-span-3 flex flex-col justify-center items-center cursor-pointer flex-1 px-6 py-3" 
-              onClick={() => setShowLocationDropdown(true)}
-              >
+          <div
+            className="col-span-3 flex flex-col justify-center items-center cursor-pointer flex-1 px-6 py-3"
+            onClick={() => setShowLocationDropdown(true)}
+          >
             <p className="text-sm">Location</p>
-            <div className="md:hidden sm:border-b sm:border-gray-400 sm:w-9/12 py-2"></div>
             <p
-              className="text-sm text-gray-400"
+              className={`text-sm ${
+                !selectedLocation ? 'text-gray-400' : 'font-semibold'
+              }`}
             >
               {selectedLocation ? selectedLocation : 'Where are you going?'}
             </p>
             {showLocationDropdown && (
               <div
-                className="absolute z-10 top-[58px] left-0 bg-white rounded-lg border-2 border-gray-300 overflow-y-auto max-h-48"
+                className="absolute z-10 top-[58px] left-0 bg-white rounded-lg border-2 border-gray-300 overflow-y-auto lg:max-h-96 max-h-60"
                 ref={locationRef}
               >
                 <h1 className="text-lg text-center font-medium py-2">
@@ -115,6 +117,7 @@ const SearchLocation = () => {
                 </ul>
               </div>
             )}
+            <div className="lg:hidden border-b border-gray-400 w-9/12 py-2"></div>
           </div>
           <div className="col-span-1 sm:hidden lg:flex justify-center">
             <div className="my-3 border-l-[1px] border-gray-400"></div>
@@ -127,7 +130,6 @@ const SearchLocation = () => {
               {moment(dateRange[0]?.startDate).format('DD/MM/YYYY')} –
               {moment(dateRange[0]?.endDate).format('DD/MM/YYYY')}
             </p>
-            <div className="md:hidden sm:border-gray-400 sm:w-9/12 py-2"></div>
             {openDate && (
               <div
                 ref={datePickerRef}
@@ -149,6 +151,7 @@ const SearchLocation = () => {
                 />
               </div>
             )}
+            <div className="lg:hidden border-b border-gray-400 w-8/12 py-2"></div>
           </div>
           <div className="col-span-1 sm:hidden lg:flex justify-center">
             <div className="my-3 border-l-[1px] border-gray-400"></div>
@@ -179,7 +182,7 @@ const SearchLocation = () => {
                 </div>
               </div>
             )}
-            <div className="md:hidden sm:border-gray-400 sm:w-9/12 py-2"></div>
+            <div className="lg:hidden border-b border-gray-400 w-9/12 py-2"></div>
           </div>
           <div className="lg:col-span-1 flex justify-center items-center cursor-pointer flex-1 col-span-3 lg:mb-0 mb-3">
             <button
@@ -190,6 +193,23 @@ const SearchLocation = () => {
               <span>Search</span>
             </button>
           </div>
+        </div>
+        <div className="flex flex-wrap justify-center mt-10 gap-3">
+          <button className="rounded-lg text-md bg-white text-black border border-gray-300 hover:border-gray-900 duration-300 px-6 py-2">
+            Type of accommodation
+          </button>
+          <button className="rounded-lg text-md bg-white text-black border border-gray-300 hover:border-gray-900 duration-300 px-6 py-2">
+            Price
+          </button>
+          <button className="rounded-lg text-md bg-white text-black border border-gray-300 hover:border-gray-900 duration-300 px-6 py-2">
+            Book now
+          </button>
+          <button className="rounded-lg text-md bg-white text-black border border-gray-300 hover:border-gray-900 duration-300 px-6 py-2">
+            Room and bedroom
+          </button>
+          <button className="rounded-lg text-md bg-white text-black border border-gray-300 hover:border-gray-900 duration-300 px-6 py-2">
+            Other filters
+          </button>
         </div>
       </div>
     </section>
