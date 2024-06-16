@@ -10,5 +10,6 @@ export const path = {
     LocationManagement: "/admin/LocationManagement",
     BookingManagement: "/admin/BookingManagement",
     RoomManagement: "/admin/RoomManagement",
-  }
+  },
+  LoginRegister: '/login-register',
 };

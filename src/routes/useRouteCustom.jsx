@@ -8,6 +8,7 @@ import UserManagement from "../pages/UserManagement/UserManagement";
 import LocationManagement from "../pages/LocationManagement/LocationManagement";
 import BookingManagement from "../pages/BookingManagement/BookingManagement";
 import RoomManagement from "../pages/RoomManagement/RoomManagement";
+import LoginRegister from "../pages/LoginRegister/LoginRegister";
 const useRouteCustom = () => {
   const route = useRoutes([
     {
@@ -29,6 +30,10 @@ const useRouteCustom = () => {
           element: <NotFound />,
         },
       ],
+    },
+    {
+      path: path.LoginRegister,
+      element: <LoginRegister />,
     },
     {
       path: path.admin.base,

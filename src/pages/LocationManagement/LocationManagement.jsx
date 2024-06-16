@@ -146,9 +146,9 @@ const LocationManagement = () => {
     },
     {
       title: "Hình ảnh",
-      dataIndex: "imagePath",
-      key: "imagePath",
-      render: (text, record) => <img src={text} alt="Hình ảnh" className="w-16 h-16" />,
+      dataIndex: "hinhAnh",
+      key: "hinhAnh",
+      render: (text) => <img src={text} alt="Hình ảnh" className="w-16 h-16" />,
       
     },
     {
