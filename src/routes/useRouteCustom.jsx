@@ -8,6 +8,10 @@ import UserManagement from '../pages/UserManagement/UserManagement';
 import LocationManagement from '../pages/LocationManagement/LocationManagement';
 import BookingManagement from '../pages/BookingManagement/BookingManagement';
 import RoomManagement from '../pages/RoomManagement/RoomManagement';
+import RoomLocate from '../pages/RoomLocate/RoomLocate';
+import RoomLocateTemplate from '../templates/RoomLocateTemplate/RoomLocateTemplate';
+import ListRoomTemplate from '../templates/ListRoomTemplate/ListRoomTemplate';
+import ListRoom from '../layout/ListRoom/ListRoom';
 const useRouteCustom = () => {
   const route = useRoutes([
     {
@@ -20,7 +24,6 @@ const useRouteCustom = () => {
         },
       ],
     },
-
     {
       path: '*',
       index: true,
@@ -45,6 +48,26 @@ const useRouteCustom = () => {
         {
           path: path.admin.RoomManagement,
           element: <RoomManagement />,
+        },
+      ],
+    },
+    {
+      path: path.rooms.base,
+      element: <ListRoomTemplate />,
+      children: [
+        {
+          index: true,
+          element: <ListRoom />,
+        },
+      ],
+    },
+    {
+      path: path.rooms.detail,
+      element: <RoomLocateTemplate />,
+      children: [
+        {
+          index: true,
+          element: <RoomLocate />,
         },
       ],
     },
