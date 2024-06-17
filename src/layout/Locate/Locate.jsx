@@ -11,6 +11,7 @@ const Locate = () => {
     viTriServ.get_vitri_phanTrang().then((res) => {
       setCities(res.data.content.data);
       console.log(res.data.content.data);
+      console.log(cities);
     });
   }, []);
   return (
@@ -18,7 +19,7 @@ const Locate = () => {
       <div className="container space-y-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {cities.map((i, d) => (
-            <Link key={i.tinhThanh} to={`/rooms/${convertToSlug(i.tinhThanh)}`}>
+            <Link key={i.tinhThanh} to={`/rooms/${i.id}`}>
               <Card
                 hoverable
                 className="w-full flex items-center cursor-pointer hover:bg-gray-100 hover:scale-105 transition duration-300 ease-in-out"
