@@ -21,8 +21,8 @@ const SignInPage = () => {
   const { handleBlur, handleChange, handleSubmit, values, errors, touched} =
   useFormik({
     initialValues: {
-      taiKhoan: '',
-      matKhau: '',
+      email: '',
+      password: '',
     },
     onSubmit: async (values, { resetForm })=> {
       console.log(values);
@@ -32,7 +32,7 @@ const SignInPage = () => {
         console.log(res);
         // handleAlert('success', 'Đăng nhập thành công');
         navigate(path.homePage);
-        saveLocalStorage('userData', res.data.content);
+        saveLocalStorage('userData', res.data.content.tonken);
         dispatch(handleGetValueUserData(res.data.content));
         resetForm();
       } catch (error) {
@@ -41,8 +41,8 @@ const SignInPage = () => {
       }
     },
     validationSchema: Yup.object({
-      taiKhoan: Yup.string().required('Vui lòng không bỏ trống'),
-      matKhau: Yup.string().required('Vui lòng không bỏ trống'),
+      email: Yup.string().required('Vui lòng không bỏ trống'),
+      password: Yup.string().required('Vui lòng không bỏ trống'),
     }),
   });
   return (
@@ -69,24 +69,24 @@ const SignInPage = () => {
       <span>or use your email password</span>
       <div className='space-y-5 w-full'>
       <InputText
-          label="Tài khoản"
-          name="taiKhoan"
+          label="Email"
+          name="email"
           handleChange={handleChange}
           handleBlur={handleBlur}
-          error={errors.taiKhoan}
-          touched={touched.taiKhoan}
+          error={errors.email}
+          touched={touched.email}
           placeholder="Vui lòng nhập tài khoản"
-          value={values.taiKhoan}
+          value={values.email}
         />
       <InputText
           label="Mật khẩu"
-          name="matKhau"
+          name="password"
           handleChange={handleChange}
           handleBlur={handleBlur}
-          error={errors.matKhau}
-          touched={touched.matKhau}
+          error={errors.password}
+          touched={touched.password}
           placeholder="Vui lòng nhập mật khẩu"
-          value={values.matKhau}
+          value={values.password}
           type="password"
         />
         
