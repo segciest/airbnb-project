@@ -15,7 +15,7 @@ export const quanLyUser = {
         return http.put(`/users/${id}`, data);
     },
     phanTrang: ( pageIndex,pageSize) =>{
-        return http.get(`/users?soLuongPhanTuTrenTrang=${pageSize} &soTrang=${pageIndex}`);
+        return http.get(`/users/phan-trang-tim-kiem?pageSize=${pageSize} &pageIndex=${pageIndex}`,pageSize,pageIndex);
     },
     timNguoiDung: ()=> {
         return http.get("/users/search/${data}");
