@@ -1,0 +1,17 @@
+.search-location {
+  .rdrDateRangePickerWrapper {
+    padding: 1.5rem;
+  }
+  .rdrDayToday {
+    .rdrDayNumber {
+      span {
+        &::after {
+          background: black !important;
+        }
+      }
+    }
+  }
+  .rdrDateDisplay {
+    color: #ff5a5f !important;
+  }
+}
