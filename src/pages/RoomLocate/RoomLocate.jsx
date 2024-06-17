@@ -23,7 +23,7 @@ const RoomLocate = () => {
     phongServ.getPhongTheoViTri(cityId).then((res) => {
       setRoomCity(res.data.content);
     });
-  }, []);
+  }, [dateRange]);
   return (
     <>
       <div

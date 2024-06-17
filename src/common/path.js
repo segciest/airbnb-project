@@ -7,7 +7,8 @@ export const path = {
   contact: '/contact',
   rooms: {
     base: '/rooms',
-    detail: '/rooms/:cityId',
+    listRoom: '/rooms/:cityId',
+    detail: '/room-detail/:roomId',
   },
   admin: {
     base: '/admin',

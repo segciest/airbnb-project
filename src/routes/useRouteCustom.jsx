@@ -12,6 +12,8 @@ import RoomLocate from '../pages/RoomLocate/RoomLocate';
 import RoomLocateTemplate from '../templates/RoomLocateTemplate/RoomLocateTemplate';
 import ListRoomTemplate from '../templates/ListRoomTemplate/ListRoomTemplate';
 import ListRoom from '../layout/ListRoom/ListRoom';
+import RoomDetailTemplate from '../templates/RoomDetailTemplate/RoomDetailTemplate';
+import RoomDetail from '../pages/RoomDetail/RoomDetail';
 const useRouteCustom = () => {
   const route = useRoutes([
     {
@@ -62,12 +64,22 @@ const useRouteCustom = () => {
       ],
     },
     {
-      path: path.rooms.detail,
+      path: path.rooms.listRoom,
       element: <RoomLocateTemplate />,
       children: [
         {
           index: true,
           element: <RoomLocate />,
+        },
+      ],
+    },
+    {
+      path: path.rooms.detail,
+      element: <RoomDetailTemplate />,
+      children: [
+        {
+          index: true,
+          element: <RoomDetail />,
         },
       ],
     },
