@@ -22,11 +22,10 @@ const SignupPage = () => {
   const { handleBlur, handleChange, handleSubmit, values, errors, touched} =
   useFormik({
     initialValues: {
-      taiKhoan: '',
+      name: '',
       email: '',
-      matKhau: '',
-      hoTen: '',
-      soDt: '',
+      password: '',
+      phone: '',
     },
     onSubmit: async (values, { resetForm }) => {
       console.log(values);
@@ -38,7 +37,7 @@ const SignupPage = () => {
         console.log(res);
         handleAlert('success', 'Đăng ký thành công');
         navigate( path.LoginRegister);
-        saveLocalStorage('userData', res.data.content);
+        saveLocalStorage('userData', res.data.content.token);
         dispatch(handleGetValueUserData(res.data.content));
         
       } catch (error) {
@@ -47,14 +46,14 @@ const SignupPage = () => {
       }
     },
     validationSchema: Yup.object({
-      taiKhoan: Yup.string().required('Vui lòng không bỏ trống'),
+     
       email: Yup.string().email("Vui lòng nhập email").required("Vui lòng nhập email"),
-      matKhau: Yup.string().required('Vui lòng không bỏ trống'),
-      hoTen: Yup.string().required("Vui lòng nhập họ và tên").matches(
+      password: Yup.string().required('Vui lòng không bỏ trống'),
+      name: Yup.string().required("Vui lòng nhập họ và tên").matches(
         /^[a-zA-Z\s'\-ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠạẢảẤấẦầẨẩẪẫẬậẮắẰằẲẳẴẵẶặẸẹẺẻẼẽẾếỀềỂểỄễỆệỈỉỊịỌọỎỏỐốỒồỔổỖỗỘộỚớỜờỞởỠỡỢợỤụỦủỨứỪừỬửỮữỰựỲỳỴỵỶỷỸỹ]+$/g,
         "Vui lòng nhập họ tên là chữ"
       ),
-      soDt: Yup.string()
+      phone: Yup.string()
       .required("Vui lòng không bỏ trống")
       .matches(
         /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
@@ -89,13 +88,13 @@ const SignupPage = () => {
   <div>
     <InputText
       label="Tài khoản"
-      name="taiKhoan"
+      name="name"
       handleChange={handleChange}
       handleBlur={handleBlur}
-      error={errors.taiKhoan}
-      touched={touched.taiKhoan}
+      error={errors.name}
+      touched={touched.name}
       placeholder="Vui lòng nhập tài khoản"
-      value={values.taiKhoan}
+      value={values.name}
     />
   </div>
   <div>
@@ -115,45 +114,27 @@ const SignupPage = () => {
   <div className='w-full'>
     <InputText
       label="Mật khẩu"
-      name="matKhau"
+      name="password"
       handleChange={handleChange}
       handleBlur={handleBlur}
-      error={errors.matKhau}
-      touched={touched.matKhau}
+      error={errors.password}
+      touched={touched.password}
       placeholder="Vui lòng nhập mật khẩu"
-      value={values.matKhau}
+      value={values.password}
       type="password"
     />
-  </div>
-  <div className='grid grid-cols-1 md:grid-cols-2 gap-5 w-full'>
-  <div>
-    <InputText
+     <InputText
       label="Số điện thoại"
-      name="soDt"
+      name="phone"
       handleChange={handleChange}
       handleBlur={handleBlur}
-      error={errors.soDt}
-      touched={touched.soDt}
+      error={errors.phone}
+      touched={touched.phone}
       placeholder="Vui lòng nhập số điện thoại"
-      Value={values.soDt}
-    />
-    
-  </div>
-  <div>
-    <InputText
-      label="Họ và tên"
-      name="hoTen"
-      handleChange={handleChange}
-      handleBlur={handleBlur}
-      error={errors.hoTen}
-      touched={touched.hoTen}
-      placeholder="Vui lòng nhập họ và tên"
-      value={values.hoTen}
+      Value={values.phone}
     />
   </div>
-</div>
-
-      <button className='btn'  type='submit' > Sign Up </button>
+ <button className='btn'  type='submit' > Sign Up </button>
     </form>
   </div>
   )
