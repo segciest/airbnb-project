@@ -2,7 +2,7 @@ import { Button, Form, Input, Modal, Popconfirm, Space, Table, Upload } from "an
 import { quanLyViTri } from "../../services/quanLyViTri";
 import { useEffect, useState } from "react";
 import { UploadOutlined } from "@ant-design/icons";
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+// import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const LocationManagement = () => {
   const [isModalVisible, setIsModalVisible] = useState(false); // state hiển thị modal
@@ -114,18 +114,18 @@ const LocationManagement = () => {
     }
   };
 
-  const showDeleteConfirm = (id) => {
-    Modal.confirm({
-      title: 'Bạn có chắc muốn xóa người dùng này?',
-      icon: <ExclamationCircleOutlined />,
-      okText: 'Đồng ý',
-      okType: 'danger',
-      cancelText: 'Hủy',
-      onOk() {
-        handleDelete(id);
-      },
-    });
-  };
+  // const showDeleteConfirm = (id) => {
+  //   Modal.confirm({
+  //     title: 'Bạn có chắc muốn xóa người dùng này?',
+  //     icon: <ExclamationCircleOutlined />,
+  //     okText: 'Đồng ý',
+  //     okType: 'danger',
+  //     cancelText: 'Hủy',
+  //     onOk() {
+  //       handleDelete(id);
+  //     },
+  //   });
+  // };
   
   // Các cột của bảng
   const columns = [
@@ -146,9 +146,9 @@ const LocationManagement = () => {
     },
     {
       title: "Hình ảnh",
-      dataIndex: "imagePath",
-      key: "imagePath",
-      render: (text, record) => <img src={text} alt="Hình ảnh" className="w-16 h-16" />,
+      dataIndex: "hinhAnh",
+      key: "hinhAnh",
+      render: (text) => <img src={text} alt="Hình ảnh" className="w-16 h-16" />,
       
     },
     {
@@ -162,7 +162,7 @@ const LocationManagement = () => {
           </Button>
           <Popconfirm
             title="Bạn có chắc muốn xóa?"
-            onConfirm={() => showDeleteConfirm(record.id)}
+            onConfirm={() => handleDelete(record.id)}
             okText="Đồng ý"
             cancelText="Hủy"
             disabled={isLoading}
@@ -243,6 +243,7 @@ const LocationManagement = () => {
               listType="picture"
               beforeUpload={() => false}
               onChange={handleUpload}
+              
             >
               <Button icon={<UploadOutlined />}>Upload</Button>
             </Upload>

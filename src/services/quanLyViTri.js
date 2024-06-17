@@ -1,3 +1,4 @@
+
 import {http} from "./config";
 export const quanLyViTri = {
     layDanhSachViTri: () => {
@@ -11,6 +12,9 @@ export const quanLyViTri = {
     },
     suaViTri: (id, data) => {
         return http.put(`/vi-tri/${id}`, data)
+    },
+    UploadHinhAnh: (id) => {
+        return http.post("/vi-tri/upload-hinh-vitri?maViTri=${id}", id)
     }
  
 }

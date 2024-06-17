@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { Button, Modal, Form, Input, Table, Popconfirm, Space, Upload, Checkbox } from 'antd';
 // Make sure to import your http instance
 import { quanLyPhong } from '../../services/quanLyPhong';

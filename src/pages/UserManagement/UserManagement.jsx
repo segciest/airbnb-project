@@ -1,10 +1,22 @@
 import { useEffect, useState } from 'react';
-import { Button, Modal, Form, Input, Pagination, Spin, Table, Space, Popconfirm } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import './userManager.scss';
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  Pagination,
+  Spin,
+  Table,
+  Space,
+  Popconfirm,
+} from 'antd';
+// import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { quanLyUser } from '../../services/quanLyUser'; // Giả sử bạn có service này để gọi API
 
 const UserManagement = () => {
   const [userList, setUserList] = useState([]); // Danh sách người dùng hiện tại
+  console.log(userList);
   const [isModalVisible, setIsModalVisible] = useState(false); // Trạng thái hiển thị modal
   const [editingUser, setEditingUser] = useState(null); // Người dùng đang được chỉnh sửa (nếu có)
   const [isLoading, setIsLoading] = useState(false); // Trạng thái loading cho các thao tác
@@ -13,7 +25,7 @@ const UserManagement = () => {
   const [totalUsers, setTotalUsers] = useState(0); // Tổng số người dùng
   const [userData, setUserData] = useState(null); // State để lưu trữ dữ liệu từ API
   const [searchKeyword, setSearchKeyword] = useState(''); // Từ khóa tìm kiếm
-
+  console.log(userData);
   // Hiển thị modal
   const showModal = () => {
     setIsModalVisible(true);
@@ -37,8 +49,16 @@ const UserManagement = () => {
       quanLyUser
         .phanTrang(currentPage, pageSize, searchKeyword) // Thêm searchKeyword vào tham số gọi API
         .then((response) => {
-          setUserList(response.data.content); // Giả sử response.data.content chứa danh sách người dùng
-          setTotalUsers(response.data.totalElements); // Giả sử response.data.totalElements chứa tổng số người dùng
+          const result = response.data.content.data.map((item, i) => {
+            return {
+              ...item,
+              key: i,
+            };
+          });
+          setUserList(result); // Giả sử response.data.content chứa danh sách người dùng
+          setTotalUsers(response.data.content.totalRow); // Giả sử response.data.totalElements chứa tổng số người dùng
+          console.log('Total users:', response.data.content.totalRow);
+          console.log(currentPage, pageSize, searchKeyword);
         })
         .catch((error) => {
           console.error('Error fetching users:', error);
@@ -52,7 +72,8 @@ const UserManagement = () => {
   }, [currentPage, pageSize, searchKeyword]);
 
   // Hàm xử lý khi thay đổi trang
-  const onChange = (page) => {
+  const onChange = (page, pageSize) => {
+    setPageSize(pageSize);
     setCurrentPage(page);
   };
 
@@ -80,7 +101,6 @@ const UserManagement = () => {
           console.error('Error:', error);
         });
     } else {
-
       // Thêm người dùng mới
       quanLyUser
         .themNguoiDung(values)
@@ -112,7 +132,6 @@ const UserManagement = () => {
       .then((response) => {
         console.log('User deleted:', response);
         // setCurrentPage(1); // Reset về trang 1 để lấy dữ liệu mới
-        
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -132,7 +151,9 @@ const UserManagement = () => {
     const fetchUserData = async () => {
       try {
         const response = await quanLyUser.timNguoiDung(); // Gọi API
+        // console.log('Response:', response);
         setUserData(response.data.content); // Lưu dữ liệu từ API vào state
+        console.log('User data:', response.data.content);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -141,55 +162,67 @@ const UserManagement = () => {
     fetchUserData(); // Gọi hàm fetchUserData khi component được mount
   }, []); // Chỉ gọi lại useEffect khi data thay đổi
 
-  const showDeleteConfirm = (id) => {
-    Modal.confirm({
-      title: 'Bạn có chắc muốn xóa người dùng này?',
-      icon: <ExclamationCircleOutlined />,
-      okText: 'Đồng ý',
-      okType: 'danger',
-      cancelText: 'Hủy',
-      onOk() {
-        handleDelete(id);
-      },
-    });
-  };
+  // const showDeleteConfirm = (id) => {
+  //   Modal.confirm({
+  //     title: 'Bạn có chắc muốn xóa người dùng này?',
+  //     icon: <ExclamationCircleOutlined />,
+  //     okText: 'Đồng ý',
+  //     okType: 'danger',
+  //     cancelText: 'Hủy',
+  //     onOk() {
+  //       handleDelete(id);
+  //     },
+  //   });
+  // };
 
   const columns = [
     {
       title: 'Mã số',
       dataIndex: 'id',
       key: 'id',
-      className: 'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-out',
+      className:
+        'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-out',
     },
     {
       title: 'Tên',
       dataIndex: 'name',
       key: 'name',
-      className: 'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-out',
+      className:
+        'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-out',
     },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      className: 'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-out',
+      className:
+        'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-out',
     },
     {
       title: 'Hành động',
       key: 'action',
-      className: 'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-out',
+      className:
+        'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-out',
       render: (text, record) => (
         <Space size="middle">
-          <Button type="primary" className="hover:bg-blue-700" onClick={() => handleEdit(record)}>
+          <Button
+            type="primary"
+            className="hover:bg-blue-700"
+            onClick={() => handleEdit(record)}
+          >
             <i className="fas fa-edit"></i> Chỉnh sửa
           </Button>
           <Popconfirm
             title="Bạn có chắc muốn xóa?"
-            onConfirm={() => showDeleteConfirm(record.id)}
+            onConfirm={() => handleDelete(record.id)}
             okText="Đồng ý"
             cancelText="Hủy"
             disabled={isLoading}
           >
-            <Button type="danger" className="hover:bg-red-700" disabled={isLoading} >
+            <Button
+              type="danger"
+              className="bg-red-500 hover:bg-red-700"
+              disabled={isLoading}
+            >
               <i className="fas fa-trash-alt"></i> Xóa
             </Button>
           </Popconfirm>
@@ -214,19 +247,26 @@ const UserManagement = () => {
           Thêm thành viên
         </Button>
         <div className="flex items-center border-2 border-gray-300 rounded-full overflow-hidden w-80">
-          <Input.Search
-            placeholder="Tìm kiếm..."
-            enterButton={<i className="fa-solid fa-magnifying-glass"></i>}
-            className="ml-3 py-1 px-2 leading-tight focus:outline-none"
-            onSearch={handleSearch} // Cập nhật xử lý khi người dùng tìm kiếm
-            // value={searchKeyword} // Sử dụng searchKeyword làm giá trị của input
-          />
+        <Input.Search
+  placeholder="Tìm kiếm..."
+  enterButton={<i className="fa-solid fa-magnifying-glass"></i>}
+  className="ml-3 py-1 px-2 leading-tight focus:outline-none"
+  onSearch={(value) => {
+    handleSearch(value); // Gọi hàm handleSearch với giá trị nhập vào
+  }}
+  value={searchKeyword} // Sử dụng searchKeyword làm giá trị của input
+  
+  onChange={(e) => setSearchKeyword(e.target.value)} // Cập nhật searchKeyword khi người dùng nhập vào
+
+/>
+
+
         </div>
       </div>
 
       <Modal
-        title={editingUser ? "Sửa thông tin thành viên" : "Thêm thành viên mới"}
-        visible={isModalVisible}
+        title={editingUser ? 'Sửa thông tin thành viên' : 'Thêm thành viên mới'}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
       >
@@ -258,18 +298,14 @@ const UserManagement = () => {
           <Form.Item
             label="Mật khẩu"
             name="password"
-            rules={[
-              { required: true, message: 'Vui lòng nhập mật khẩu!' },
-            ]}
+            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
           >
             <Input type="password" />
           </Form.Item>
           <Form.Item
             label="Tài khoản"
             name="username"
-            rules={[
-              { required: true, message: 'Vui lòng nhập tài khoản!' },
-            ]}
+            rules={[{ required: true, message: 'Vui lòng nhập tài khoản!' }]}
           >
             <Input />
           </Form.Item>
@@ -284,7 +320,7 @@ const UserManagement = () => {
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              {editingUser ? "Lưu" : "Thêm"}
+              {editingUser ? 'Lưu' : 'Thêm'}
             </Button>
           </Form.Item>
         </Form>
@@ -296,20 +332,24 @@ const UserManagement = () => {
           columns={columns}
           pagination={false}
           loading={isLoading}
+          
         />
 
         <div className="flex justify-center w-full">
           {isLoading ? (
-            <Spin tip="Loading..." />
+            <>
+              {/* <Spin tip="Loading..." /> */}
+              <Spin />
+            </>
           ) : (
             <Pagination
-              showQuickJumper
+              // showQuickJumper
               current={currentPage}
               total={totalUsers}
               onChange={onChange}
               onShowSizeChange={onShowSizeChange}
-              pageSizeOptions={['5', '10', '20', '50']}
-              pageSize={pageSize}
+              // pageSizeOptions={['5', '10', '20', '50']}
+              // pageSize={pageSize}
             />
           )}
         </div>

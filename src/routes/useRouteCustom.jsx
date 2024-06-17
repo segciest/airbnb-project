@@ -1,15 +1,29 @@
-import { useRoutes } from 'react-router-dom';
-import { path } from '../common/path';
-import HomeTemplate from '../templates/HomeTemplate/HomeTemplate';
-import HomePage from '../pages/HomePage/HomePage';
-import NotFound from '../layout/NotFound/NotFound';
-import AdminTemplate from '../templates/AdminTemplate/AdminTemplate';
-import UserManagement from '../pages/UserManagement/UserManagement';
-import LocationManagement from '../pages/LocationManagement/LocationManagement';
-import BookingManagement from '../pages/BookingManagement/BookingManagement';
-import RoomManagement from '../pages/RoomManagement/RoomManagement';
 import ListRoom from '../layout/ListRoom/ListRoom';
 import InfoUser from '../layout/InfoUser/InfoUser';
+import { useRoutes } from "react-router-dom";
+import { path } from "../common/path";
+import HomeTemplate from "../templates/HomeTemplate/HomeTemplate";
+import HomePage from "../pages/HomePage/HomePage";
+import NotFound from "../layout/NotFound/NotFound";
+import AdminTemplate from "../templates/AdminTemplate/AdminTemplate";
+import UserManagement from "../pages/UserManagement/UserManagement";
+import LocationManagement from "../pages/LocationManagement/LocationManagement";
+import BookingManagement from "../pages/BookingManagement/BookingManagement";
+import RoomManagement from "../pages/RoomManagement/RoomManagement";
+import LoginRegister from "../pages/LoginRegister/LoginRegister";
+
+// import { useRoutes } from 'react-router-dom';
+// import { path } from '../common/path';
+// import HomeTemplate from '../templates/HomeTemplate/HomeTemplate';
+// import HomePage from '../pages/HomePage/HomePage';
+// import NotFound from '../layout/NotFound/NotFound';
+// import AdminTemplate from '../templates/AdminTemplate/AdminTemplate';
+// import UserManagement from '../pages/UserManagement/UserManagement';
+// import LocationManagement from '../pages/LocationManagement/LocationManagement';
+// import BookingManagement from '../pages/BookingManagement/BookingManagement';
+// import RoomManagement from '../pages/RoomManagement/RoomManagement';
+
+
 const useRouteCustom = () => {
   const route = useRoutes([
     {
@@ -69,6 +83,31 @@ const useRouteCustom = () => {
         },
       ],
     },
+
+    {
+      path: path.LoginRegister,
+      element: <LoginRegister />,
+    },
+    {
+      path: path.admin.base,
+      element: <AdminTemplate/>,
+      children:[{
+        index: true,
+        element: <UserManagement/>
+      },{
+        path: path.admin.LocationManagement,
+        element: <LocationManagement/>
+      },{
+        path: path.admin.BookingManagement,
+        element: <BookingManagement/>
+      },
+    {
+      path: path.admin.RoomManagement,
+      element:<RoomManagement/>
+    }]
+    }
+
+
   ]);
   return route;
 };

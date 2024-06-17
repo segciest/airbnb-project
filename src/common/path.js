@@ -8,9 +8,11 @@ export const path = {
   pricing: '/pricing',
   contact: '/contact',
   admin: {
-    base: '/admin',
-    LocationManagement: '/admin/LocationManagement',
-    BookingManagement: '/admin/BookingManagement',
-    RoomManagement: '/admin/RoomManagement',
+
+    base: "/admin",
+    LocationManagement: "/admin/LocationManagement",
+    BookingManagement: "/admin/BookingManagement",
+    RoomManagement: "/admin/RoomManagement",
   },
+  LoginRegister: '/login-register',
 };
