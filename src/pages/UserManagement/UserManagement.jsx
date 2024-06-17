@@ -151,7 +151,9 @@ const UserManagement = () => {
     const fetchUserData = async () => {
       try {
         const response = await quanLyUser.timNguoiDung(); // Gọi API
+        // console.log('Response:', response);
         setUserData(response.data.content); // Lưu dữ liệu từ API vào state
+        console.log('User data:', response.data.content);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -245,13 +247,20 @@ const UserManagement = () => {
           Thêm thành viên
         </Button>
         <div className="flex items-center border-2 border-gray-300 rounded-full overflow-hidden w-80">
-          <Input.Search
-            placeholder="Tìm kiếm..."
-            enterButton={<i className="fa-solid fa-magnifying-glass"></i>}
-            className="ml-3 py-1 px-2 leading-tight focus:outline-none"
-            onSearch={handleSearch} // Cập nhật xử lý khi người dùng tìm kiếm
-            // value={searchKeyword} // Sử dụng searchKeyword làm giá trị của input
-          />
+        <Input.Search
+  placeholder="Tìm kiếm..."
+  enterButton={<i className="fa-solid fa-magnifying-glass"></i>}
+  className="ml-3 py-1 px-2 leading-tight focus:outline-none"
+  onSearch={(value) => {
+    handleSearch(value); // Gọi hàm handleSearch với giá trị nhập vào
+  }}
+  value={searchKeyword} // Sử dụng searchKeyword làm giá trị của input
+  
+  onChange={(e) => setSearchKeyword(e.target.value)} // Cập nhật searchKeyword khi người dùng nhập vào
+
+/>
+
+
         </div>
       </div>
 
@@ -323,6 +332,7 @@ const UserManagement = () => {
           columns={columns}
           pagination={false}
           loading={isLoading}
+          
         />
 
         <div className="flex justify-center w-full">

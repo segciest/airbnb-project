@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import  { useContext } from 'react'
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -8,8 +8,11 @@ import { AlertContext } from '../../App';
 import { path } from '../../common/path';
 import InputText from '../../components/InputText/InputText';
 import { auth } from '../../services/auth';
-import { saveLocalStorage } from '../../utils/util';
+
 import { handleGetValueUserData } from '../../redux/slice/userSlice';
+import { saveLocalStorage } from '../../utils/util';
+// import { handleGetValueUserData } from '../../redux/slice/userSlice';
+// import { handleGetValueUserData } from '../../redux/slice/userSlice';
 const SignupPage = () => {
   // const resetForm = useFormik()
   const navigate = useNavigate();

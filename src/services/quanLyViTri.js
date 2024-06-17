@@ -7,7 +7,7 @@ export const quanLyViTri = {
         return http.post("/vi-tri", data)
     },
     xoaViTri: (id) => {
-        return http.delete(`/vi-tri/${id}`)
+        return http.delete(`/vi-tri?id=${id}`)
     },
     suaViTri: (id, data) => {
         return http.put(`/vi-tri/${id}`, data)

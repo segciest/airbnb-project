@@ -5,20 +5,18 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 // import { AlertContext } from '../../App';
-
-
-
 import { handleGetValueUserData } from '../../redux/slice/userSlice';
-import { saveLocalStorage } from '../../utils/utils';
+// import { saveLocalStorage } from '../../utils/utils';
 import InputText from '../../components/InputText/InputText';
 import { path } from '../../common/path';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { auth } from '../../services/auth';
+import { saveLocalStorage } from '../../utils/util';
 const SignInPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-//   const {handleAlert } = useContext(AlertContext)
+  // const {handleAlert } = useContext(AlertContext)
 //   console.log(handleAlert);
   const { handleBlur, handleChange, handleSubmit, values, errors, touched} =
   useFormik({

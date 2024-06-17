@@ -243,6 +243,7 @@ const LocationManagement = () => {
               listType="picture"
               beforeUpload={() => false}
               onChange={handleUpload}
+              
             >
               <Button icon={<UploadOutlined />}>Upload</Button>
             </Upload>
