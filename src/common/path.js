@@ -1,7 +1,9 @@
 export const path = {
   homePage: '/',
-  detail: '/detail',
-  about: '/about',
+  detail: {
+    base: '/rooms/:maViTri',
+  },
+  about: '/info-user/:idUser',
   services: '/services',
   pricing: '/pricing',
   contact: '/contact',

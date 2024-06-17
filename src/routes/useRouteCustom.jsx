@@ -1,4 +1,5 @@
-
+import ListRoom from '../layout/ListRoom/ListRoom';
+import InfoUser from '../layout/InfoUser/InfoUser';
 import { useRoutes } from "react-router-dom";
 import { path } from "../common/path";
 import HomeTemplate from "../templates/HomeTemplate/HomeTemplate";
@@ -22,6 +23,7 @@ import LoginRegister from "../pages/LoginRegister/LoginRegister";
 // import BookingManagement from '../pages/BookingManagement/BookingManagement';
 // import RoomManagement from '../pages/RoomManagement/RoomManagement';
 
+
 const useRouteCustom = () => {
   const route = useRoutes([
     {
@@ -34,7 +36,26 @@ const useRouteCustom = () => {
         },
       ],
     },
-
+    {
+      path: path.detail.base,
+      element: <HomeTemplate />,
+      children: [
+        {
+          index: true,
+          element: <ListRoom />,
+        },
+      ],
+    },
+    {
+      path: path.about,
+      element: <HomeTemplate />,
+      children: [
+        {
+          index: true,
+          element: <InfoUser />,
+        },
+      ],
+    },
     {
       path: '*',
       index: true,
