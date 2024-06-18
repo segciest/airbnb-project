@@ -3,9 +3,9 @@ import { useParams } from 'react-router-dom';
 import Banner from '../Banner/Banner';
 import SearchLocation from '../SearchLocation/SearchLocation';
 import DetailsList from '../DetailsList/DetailsList';
-import './listRoom.scss';
+import './listRoomList.scss';
 
-const ListRoom = () => {
+const ListRoomList = () => {
   const { maViTri } = useParams();
   console.log(maViTri);
   return (
@@ -31,4 +31,4 @@ const ListRoom = () => {
   );
 };
 
-export default ListRoom;
+export default ListRoomList;
