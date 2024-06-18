@@ -13,6 +13,8 @@ import {
 } from '../../redux/slice/searchSlice';
 import moment from 'moment';
 import { viTriServ } from '../../services/viTriServ';
+import { formatISO, parseISO } from 'date-fns';
+import convertToSlug from '../../utils/convertToSlug';
 
 const SearchLocation = () => {
   const [openDate, setOpenDate] = useState(false);
@@ -99,11 +101,14 @@ const SearchLocation = () => {
                 <h1 className="text-lg text-center font-medium py-2">
                   Search for locations
                 </h1>
-                <ul className="grid grid-cols-3 gap-4">
+                <ul className="grid grid-cols-3 gap-4 z-999">
                   {locations.map((location) => (
                     <li
                       key={location.id}
-                      onClick={() => handleLocationSelect(location)}
+                      onClick={() => {
+                        handleLocationSelect(location);
+                        dispatch(setLocatedAt(location.id));
+                      }}
                       className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
                     >
                       <img
@@ -127,8 +132,8 @@ const SearchLocation = () => {
             onClick={handleOpenDate}
           >
             <p>
-              {moment(dateRange[0]?.startDate).format('DD/MM/YYYY')} –
-              {moment(dateRange[0]?.endDate).format('DD/MM/YYYY')}
+              {moment(parseISO(dateRange[0]?.startDate)).format('DD/MM/YYYY')} –
+              {moment(parseISO(dateRange[0]?.endDate)).format('DD/MM/YYYY')}
             </p>
             {openDate && (
               <div
@@ -139,8 +144,22 @@ const SearchLocation = () => {
               >
                 <DateRangePicker
                   className="p-6 flex lg:max-h-full lg:w-full sm:w-1/4 sm:h-1/4 overflow-auto"
-                  onChange={(item) => dispatch(setDateRange([item.selection]))}
-                  ranges={dateRange}
+                  onChange={(item) =>
+                    dispatch(
+                      setDateRange([
+                        {
+                          ...item.selection,
+                          startDate: formatISO(item.selection.startDate),
+                          endDate: formatISO(item.selection.endDate),
+                        },
+                      ])
+                    )
+                  }
+                  ranges={dateRange.map((range) => ({
+                    ...range,
+                    startDate: parseISO(range.startDate),
+                    endDate: parseISO(range.endDate),
+                  }))}
                   showSelectionPreview={true}
                   moveRangeOnFirstSelection={false}
                   months={2}
@@ -187,7 +206,14 @@ const SearchLocation = () => {
           <div className="lg:col-span-1 flex justify-center items-center cursor-pointer flex-1 col-span-3 lg:mb-0 mb-3">
             <button
               className="bg-[#FD5B61] hover:bg-[#cc494e] transition-all text-white rounded-full px-3 py-3 flex items-center space-x-2"
-              onClick={() => navigate('/search')}
+              onClick={() => {
+                if (locatedAt) {
+                  navigate(`/rooms/${locatedAt}`);
+                  window.location.reload();
+                } else {
+                  navigate(`/rooms`);
+                }
+              }}
             >
               <i className="fa-solid fa-magnifying-glass"></i>
               <span>Search</span>

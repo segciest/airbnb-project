@@ -1,38 +1,31 @@
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import {
-  handleTurnOnLoading,
-  handleTurnOffLoading,
-} from "../../redux/slice/loadingSlice";
-import { useEffect } from "react";
+import Lottie from 'lottie-react';
+import { useNavigate } from 'react-router-dom';
+import NotFound404 from './../../assets/Animation/NotFound404.json';
 
 const NotFound = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(handleTurnOnLoading());
-  //   dispatch(handleTurnOffLoading());
-  // }, []);
 
   return (
     <div className="">
-      <div className="flex justify-center" style={{ height: "600px" }}>
-        <img
-          className="object-contain"
-          style={{ width: "600px", height: "600px" }}
-          src="./src/image/notfound.png"
-          alt=""
+      <div className="flex justify-center" style={{ height: '700px' }}>
+        <Lottie
+          className="cursor-pointer"
+          animationData={NotFound404}
+          loop={true}
+          onClick={() => {
+            navigate('/');
+          }}
         />
       </div>
       <div className="text-center">
-        <button
+        <p
+          className="text-[80px] font-bold text-[#ff5a5f] animate-bounce cursor-pointer hover:text-[#c14246] transition-all duration-500"
           onClick={() => {
-            navigate("/");
+            navigate('/');
           }}
-          className="px-5 py-2 bg-violet-400 cursor-pointer hover:text-white hover:bg-cyan-300 rounded-lg"
         >
-          Go Home
-        </button>
+          Page Not Found
+        </p>
       </div>
     </div>
   );

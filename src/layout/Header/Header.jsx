@@ -22,7 +22,7 @@ const Header = () => {
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto lg:p-4 px-4 py-2">
           <a href={path.homePage}>
             <img
-              src="./src/assets/img/Airbnb_Logo-12345.png"
+              src="/img/Airbnb_Logo-12345.png"
               alt=""
               className="h-10 animate__animated animate__flip"
             />

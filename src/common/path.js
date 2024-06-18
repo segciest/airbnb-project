@@ -7,6 +7,11 @@ export const path = {
   services: '/services',
   pricing: '/pricing',
   contact: '/contact',
+  rooms: {
+    base: '/rooms',
+    listRoom: '/rooms/:cityId',
+    detail: '/room-detail/:roomId',
+  },
   admin: {
 
     base: "/admin",
