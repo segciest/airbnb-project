@@ -1,4 +1,3 @@
-
 import { useRoutes } from 'react-router-dom';
 import { path } from '../common/path';
 import HomeTemplate from '../templates/HomeTemplate/HomeTemplate';
@@ -16,7 +15,7 @@ import ListRoom from '../layout/ListRoom/ListRoom';
 import RoomDetailTemplate from '../templates/RoomDetailTemplate/RoomDetailTemplate';
 import RoomDetail from '../pages/RoomDetail/RoomDetail';
 import InfoUser from '../layout/InfoUser/InfoUser';
-import LoginRegister from "../pages/LoginRegister/LoginRegister";
+import LoginRegister from '../pages/LoginRegister/LoginRegister';
 const useRouteCustom = () => {
   const route = useRoutes([
     {
@@ -30,16 +29,6 @@ const useRouteCustom = () => {
       ],
     },
     {
-      path: path.detail.base,
-      element: <HomeTemplate />,
-      children: [
-        {
-          index: true,
-          element: <ListRoom />,
-        },
-      ],
-    },
-    {
       path: path.about,
       element: <HomeTemplate />,
       children: [
@@ -48,11 +37,6 @@ const useRouteCustom = () => {
           element: <InfoUser />,
         },
       ],
-    },
-    {
-      path: '*',
-      index: true,
-      element: <NotFound />,
     },
     {
       path: path.admin.base,
@@ -112,22 +96,31 @@ const useRouteCustom = () => {
     },
     {
       path: path.admin.base,
-      element: <AdminTemplate/>,
-      children:[{
-        index: true,
-        element: <UserManagement/>
-      },{
-        path: path.admin.LocationManagement,
-        element: <LocationManagement/>
-      },{
-        path: path.admin.BookingManagement,
-        element: <BookingManagement/>
-      },
+      element: <AdminTemplate />,
+      children: [
+        {
+          index: true,
+          element: <UserManagement />,
+        },
+        {
+          path: path.admin.LocationManagement,
+          element: <LocationManagement />,
+        },
+        {
+          path: path.admin.BookingManagement,
+          element: <BookingManagement />,
+        },
+        {
+          path: path.admin.RoomManagement,
+          element: <RoomManagement />,
+        },
+      ],
+    },
     {
-      path: path.admin.RoomManagement,
-      element:<RoomManagement/>
-    }]
-    }
+      path: '*',
+      index: true,
+      element: <NotFound />,
+    },
   ]);
   return route;
 };
