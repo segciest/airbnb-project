@@ -1,3 +1,4 @@
+
 import { useRoutes } from 'react-router-dom';
 import { path } from '../common/path';
 import HomeTemplate from '../templates/HomeTemplate/HomeTemplate';
@@ -14,6 +15,8 @@ import ListRoomTemplate from '../templates/ListRoomTemplate/ListRoomTemplate';
 import ListRoom from '../layout/ListRoom/ListRoom';
 import RoomDetailTemplate from '../templates/RoomDetailTemplate/RoomDetailTemplate';
 import RoomDetail from '../pages/RoomDetail/RoomDetail';
+import InfoUser from '../layout/InfoUser/InfoUser';
+import LoginRegister from "../pages/LoginRegister/LoginRegister";
 const useRouteCustom = () => {
   const route = useRoutes([
     {
@@ -23,6 +26,26 @@ const useRouteCustom = () => {
         {
           index: true,
           element: <HomePage />,
+        },
+      ],
+    },
+    {
+      path: path.detail.base,
+      element: <HomeTemplate />,
+      children: [
+        {
+          index: true,
+          element: <ListRoom />,
+        },
+      ],
+    },
+    {
+      path: path.about,
+      element: <HomeTemplate />,
+      children: [
+        {
+          index: true,
+          element: <InfoUser />,
         },
       ],
     },
@@ -83,6 +106,28 @@ const useRouteCustom = () => {
         },
       ],
     },
+    {
+      path: path.LoginRegister,
+      element: <LoginRegister />,
+    },
+    {
+      path: path.admin.base,
+      element: <AdminTemplate/>,
+      children:[{
+        index: true,
+        element: <UserManagement/>
+      },{
+        path: path.admin.LocationManagement,
+        element: <LocationManagement/>
+      },{
+        path: path.admin.BookingManagement,
+        element: <BookingManagement/>
+      },
+    {
+      path: path.admin.RoomManagement,
+      element:<RoomManagement/>
+    }]
+    }
   ]);
   return route;
 };

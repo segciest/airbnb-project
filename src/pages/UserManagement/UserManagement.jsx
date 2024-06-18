@@ -1,118 +1,361 @@
-
-
-import { useState } from 'react';
-import { Button, Modal, Form, Input } from 'antd';
+import { useEffect, useState } from 'react';
+import './userManager.scss';
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  Pagination,
+  Spin,
+  Table,
+  Space,
+  Popconfirm,
+} from 'antd';
+// import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { quanLyUser } from '../../services/quanLyUser'; // Giả sử bạn có service này để gọi API
 
 const UserManagement = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
+  const [userList, setUserList] = useState([]); // Danh sách người dùng hiện tại
+  console.log(userList);
+  const [isModalVisible, setIsModalVisible] = useState(false); // Trạng thái hiển thị modal
+  const [editingUser, setEditingUser] = useState(null); // Người dùng đang được chỉnh sửa (nếu có)
+  const [isLoading, setIsLoading] = useState(false); // Trạng thái loading cho các thao tác
+  const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
+  const [pageSize, setPageSize] = useState(10); // Số lượng phần tử trên mỗi trang
+  const [totalUsers, setTotalUsers] = useState(0); // Tổng số người dùng
+  const [userData, setUserData] = useState(null); // State để lưu trữ dữ liệu từ API
+  const [searchKeyword, setSearchKeyword] = useState(''); // Từ khóa tìm kiếm
+  console.log(userData);
+  // Hiển thị modal
   const showModal = () => {
     setIsModalVisible(true);
   };
 
+  // Xử lý khi bấm OK trong modal (nút OK)
   const handleOk = () => {
     setIsModalVisible(false);
   };
 
+  // Xử lý khi bấm cancel trong modal (nút Cancel)
   const handleCancel = () => {
     setIsModalVisible(false);
+    setEditingUser(null);
   };
 
-  const onFinish = (values) => {
-    console.log('Success:', values);
-    // Bạn có thể xử lý logic thêm thành viên ở đây
-    setIsModalVisible(false);
+  // Hàm gọi API để lấy danh sách người dùng theo trang và từ khóa tìm kiếm
+  useEffect(() => {
+    const fetchUsers = () => {
+      setIsLoading(true);
+      quanLyUser
+        .phanTrang(currentPage, pageSize, searchKeyword) // Thêm searchKeyword vào tham số gọi API
+        .then((response) => {
+          const result = response.data.content.data.map((item, i) => {
+            return {
+              ...item,
+              key: i,
+            };
+          });
+          setUserList(result); // Giả sử response.data.content chứa danh sách người dùng
+          setTotalUsers(response.data.content.totalRow); // Giả sử response.data.totalElements chứa tổng số người dùng
+          console.log('Total users:', response.data.content.totalRow);
+          console.log(currentPage, pageSize, searchKeyword);
+        })
+        .catch((error) => {
+          console.error('Error fetching users:', error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    };
+
+    fetchUsers();
+  }, [currentPage, pageSize, searchKeyword]);
+
+  // Hàm xử lý khi thay đổi trang
+  const onChange = (page, pageSize) => {
+    setPageSize(pageSize);
+    setCurrentPage(page);
   };
+
+  // Hàm xử lý khi thay đổi kích thước trang
+  const onShowSizeChange = (current, size) => {
+    setPageSize(size);
+    setCurrentPage(1); // Reset về trang 1 khi thay đổi pageSize
+  };
+
+  // Xử lý khi hoàn tất form
+  const onFinish = (values) => {
+    // Sửa người dùng
+    if (editingUser) {
+      quanLyUser
+        .suaNguoiDung(editingUser.id, values)
+        .then((response) => {
+          console.log('User updated:', response);
+          setCurrentPage(1); // Reset về trang 1 để lấy dữ liệu mới
+        })
+        .then(() => {
+          setIsModalVisible(false);
+          setEditingUser(null);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    } else {
+      // Thêm người dùng mới
+      quanLyUser
+        .themNguoiDung(values)
+        .then((response) => {
+          console.log('User added:', response);
+          setCurrentPage(1); // Reset về trang 1 để lấy dữ liệu mới
+        })
+        .then(() => {
+          setIsModalVisible(false);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+  };
+
+  // Xử lý khi bấm nút chỉnh sửa người dùng (hiện modal lên)
+  const handleEdit = (user) => {
+    setEditingUser(user);
+    setIsModalVisible(true);
+  };
+
+  // Xử lý khi bấm nút xóa người dùng
+  const handleDelete = (id) => {
+    setIsLoading(true);
+
+    quanLyUser
+      .xoaNguoiDung(id)
+      .then((response) => {
+        console.log('User deleted:', response);
+        // setCurrentPage(1); // Reset về trang 1 để lấy dữ liệu mới
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  // Xử lý tìm kiếm
+  const handleSearch = (value) => {
+    setSearchKeyword(value);
+    setCurrentPage(1); // Reset về trang 1 khi thực hiện tìm kiếm
+  };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await quanLyUser.timNguoiDung(); // Gọi API
+        // console.log('Response:', response);
+        setUserData(response.data.content); // Lưu dữ liệu từ API vào state
+        console.log('User data:', response.data.content);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData(); // Gọi hàm fetchUserData khi component được mount
+  }, []); // Chỉ gọi lại useEffect khi data thay đổi
+
+  // const showDeleteConfirm = (id) => {
+  //   Modal.confirm({
+  //     title: 'Bạn có chắc muốn xóa người dùng này?',
+  //     icon: <ExclamationCircleOutlined />,
+  //     okText: 'Đồng ý',
+  //     okType: 'danger',
+  //     cancelText: 'Hủy',
+  //     onOk() {
+  //       handleDelete(id);
+  //     },
+  //   });
+  // };
+
+  const columns = [
+    {
+      title: 'Mã số',
+      dataIndex: 'id',
+      key: 'id',
+      className:
+        'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-out',
+    },
+    {
+      title: 'Tên',
+      dataIndex: 'name',
+      key: 'name',
+      className:
+        'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-out',
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+      className:
+        'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-out',
+    },
+    {
+      title: 'Hành động',
+      key: 'action',
+      className:
+        'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-out',
+      render: (text, record) => (
+        <Space size="middle">
+          <Button
+            type="primary"
+            className="hover:bg-blue-700"
+            onClick={() => handleEdit(record)}
+          >
+            <i className="fas fa-edit"></i> Chỉnh sửa
+          </Button>
+          <Popconfirm
+            title="Bạn có chắc muốn xóa?"
+            onConfirm={() => handleDelete(record.id)}
+            okText="Đồng ý"
+            cancelText="Hủy"
+            disabled={isLoading}
+          >
+            <Button
+              type="danger"
+              className="bg-red-500 hover:bg-red-700"
+              disabled={isLoading}
+            >
+              <i className="fas fa-trash-alt"></i> Xóa
+            </Button>
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <div>
-      <div className='mx-1'>
-            Dasboard <i style={{color: '#F08080'}} className="fa-solid fa-arrow-right"></i><span style={{color: '#F08080'}}> Quản lý Người Dùng</span>
-          </div>
-    <div className='flex justify-between'>
-      <Button style={{backgroundColor:'#F08080', marginTop:'20px'}} onClick={showModal}>
-      <i className="fa-solid fa-user-plus"></i>
-        Thêm thành viên
-      </Button>
-      <div className="flex items-center border-2 border-gray-300 rounded-full overflow-hidden w-80">
-  <input
-    className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-    type="text"
-    placeholder="Search..."
-    aria-label="Full name"
-  />
-   <button className="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded" type="button">
-   <i className="fa-solid fa-magnifying-glass"></i>
-  </button>
-  </div>
-</div>
-
+      <div className="mx-1">
+        Dashboard{' '}
+        <i style={{ color: '#F08080' }} className="fa-solid fa-arrow-right"></i>
+        <span style={{ color: '#F08080' }}> Quản lý Người Dùng</span>
+      </div>
+      <div className="flex justify-between">
+        <Button
+          style={{ backgroundColor: '#F08080', marginTop: '20px' }}
+          onClick={showModal}
+        >
+          <i className="fa-solid fa-user-plus"></i>
+          Thêm thành viên
+        </Button>
+        <div className="flex items-center border-2 border-gray-300 rounded-full overflow-hidden w-80">
+        <Input.Search
+  placeholder="Tìm kiếm..."
+  enterButton={<i className="fa-solid fa-magnifying-glass"></i>}
+  className="ml-3 py-1 px-2 leading-tight focus:outline-none"
+  onSearch={(value) => {
+    handleSearch(value); // Gọi hàm handleSearch với giá trị nhập vào
+  }}
+  value={searchKeyword} // Sử dụng searchKeyword làm giá trị của input
   
-      <Modal title="Thêm thành viên mới" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+  onChange={(e) => setSearchKeyword(e.target.value)} // Cập nhật searchKeyword khi người dùng nhập vào
+
+/>
+
+
+        </div>
+      </div>
+
+      <Modal
+        title={editingUser ? 'Sửa thông tin thành viên' : 'Thêm thành viên mới'}
+        open={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
         <Form
           name="add_member"
           onFinish={onFinish}
           layout="vertical"
+          initialValues={editingUser || {}}
         >
           <Form.Item
             label="Tên"
             name="name"
-            rules={[{ required: true, message: 'Vui lòng nhập tên thành viên!' }]}
+            rules={[
+              { required: true, message: 'Vui lòng nhập tên thành viên!' },
+            ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             label="Email"
             name="email"
-            rules={[{ required: true, message: 'Vui lòng nhập email!' }, { type: 'email', message: 'Email không hợp lệ!' }]}
+            rules={[
+              { required: true, message: 'Vui lòng nhập email!' },
+              { type: 'email', message: 'Email không hợp lệ!' },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Mật khẩu"
+            name="password"
+            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+          >
+            <Input type="password" />
+          </Form.Item>
+          <Form.Item
+            label="Tài khoản"
+            name="username"
+            rules={[{ required: true, message: 'Vui lòng nhập tài khoản!' }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             label="Số điện thoại"
             name="phone"
-            rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' }]}
+            rules={[
+              { required: true, message: 'Vui lòng nhập số điện thoại!' },
+            ]}
           >
             <Input />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Thêm
+              {editingUser ? 'Lưu' : 'Thêm'}
             </Button>
           </Form.Item>
         </Form>
       </Modal>
-      <div className="overflow-x-auto mt-10">
-  <table className="min-w-full bg-white">
-    <thead>
-      <tr>
-        <th className="border px-8 py-4">Tên</th>
-        <th className="border px-8 py-4">Mã số</th>
-        <th className="border px-8 py-4">Hình ảnh</th>
-        <th className="border px-8 py-4">Mô tả</th>
-        <th className="border px-8 py-4">Chi tiết</th>
-      </tr>
-    </thead>
-    <tbody className='bg-pink-400 hover:bg-gradient-to-r hover:from-pink-500 hover:to-yellow-500 transition duration-500 ease-in-out '>
-      {/* Repeat this tr for each row in your data */}
-      <tr>
-        <td className="border px-8 py-4">Tên người dùng</td>
-        <td className="border px-8 py-4">12345</td>
-        <td className="border px-8 py-4">
-          <img src="path-to-image.jpg" alt="Hình ảnh" className="w-16 h-16" />
-        </td>
-        <td className="border px-8 py-4">Mô tả ngắn gọn</td>
-        <td className="border px-8 py-4">Thông tin chi tiết</td>
-      </tr>
-      {/* End of data row */}
-    </tbody>
-  </table>
-</div>
 
+      <div className="overflow-x-auto mt-10">
+        <Table
+          dataSource={userList}
+          columns={columns}
+          pagination={false}
+          loading={isLoading}
+          
+        />
+
+        <div className="flex justify-center w-full">
+          {isLoading ? (
+            <>
+              {/* <Spin tip="Loading..." /> */}
+              <Spin />
+            </>
+          ) : (
+            <Pagination
+              // showQuickJumper
+              current={currentPage}
+              total={totalUsers}
+              onChange={onChange}
+              onShowSizeChange={onShowSizeChange}
+              // pageSizeOptions={['5', '10', '20', '50']}
+              // pageSize={pageSize}
+            />
+          )}
+        </div>
+      </div>
     </div>
-    
   );
 };
 
 export default UserManagement;
-
