@@ -41,26 +41,26 @@ const BoxCustom = (props) => {
       </div>
 
       {/* Info */}
-      <div className="truncate">
-        <p>Căn hộ tại khu vực {props.khuVuc}</p>
+      <div className="infoRoom truncate">
+        <p className="text-[#8D939D]">Căn hộ tại khu vực {props.khuVuc}</p>
         {/* Tên phòng */}
-        <h1 className="roomName truncate">{props.tenPhong}</h1>
+        <h1 className="text-[#5D5D5D] roomName truncate">{props.tenPhong}</h1>
 
         {/* Chi tiết phòng */}
         <div className="roomAlias">
-          <p className="truncate">
+          <p className="text-[#BFC2C8] truncate">
             {props.khach} khách * {props.phongNgu} phòng ngủ * {props.giuong}{' '}
             giường * {props.phongTam} phòng tắm
           </p>
 
           {/* Dụng cụ trong phòng */}
-          <p>{renderText(props)}</p>
+          <p className="text-[#BFC2C8]">{renderText(props)}</p>
         </div>
       </div>
 
       {/* Giá */}
       <div className="roomPrice">
-        <p>${props.giaTien}/1 đêm</p>
+        <p className="text-[#1F1F1F]">${props.giaTien}/1 đêm</p>
       </div>
     </div>
   );

@@ -113,7 +113,7 @@ const Footer = () => {
             </ul>
           </div>
         </div>
-        <div className="container mx-auto text-center text-xs text-gray-500 border-t border-gray-200 pt-4 mt-6">
+        <div className="bottomFooter container mx-auto text-center text-xs text-gray-500 border-t border-gray-200 pt-4 mt-6">
           <div className="flex justify-center space-x-4 mb-4">
             <div>© 2024 Airbnb, Inc.</div>
             <div>·</div>

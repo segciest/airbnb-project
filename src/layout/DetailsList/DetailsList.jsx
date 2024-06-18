@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRoomAsyncThunk } from '../../redux/slice/listRoomSlice';
 import BoxCustom from '../../components/BoxCustom/BoxCustom';
+
 const DetailsList = () => {
   const { maViTri } = useParams();
   const dispatch = useDispatch();
