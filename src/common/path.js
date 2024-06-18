@@ -1,7 +1,7 @@
 export const path = {
   homePage: '/',
   detail: {
-    base: '/rooms/:maViTri',
+    base: '/room/:maViTri',
   },
   about: '/info-user/:idUser',
   services: '/services',
@@ -13,11 +13,10 @@ export const path = {
     detail: '/room-detail/:roomId',
   },
   admin: {
-
-    base: "/admin",
-    LocationManagement: "/admin/LocationManagement",
-    BookingManagement: "/admin/BookingManagement",
-    RoomManagement: "/admin/RoomManagement",
+    base: '/admin',
+    LocationManagement: '/admin/LocationManagement',
+    BookingManagement: '/admin/BookingManagement',
+    RoomManagement: '/admin/RoomManagement',
   },
   LoginRegister: '/login-register',
 };

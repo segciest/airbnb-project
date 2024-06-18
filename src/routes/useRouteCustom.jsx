@@ -17,6 +17,7 @@ import RoomDetail from '../pages/RoomDetail/RoomDetail';
 import InfoUser from '../layout/InfoUser/InfoUser';
 import LoginRegister from '../pages/LoginRegister/LoginRegister';
 import ListRoomList from '../layout/ListRoomList/ListRoomList';
+import ABC from '../pages/ABC/ABC';
 
 const useRouteCustom = () => {
   const route = useRoutes([
@@ -127,6 +128,10 @@ const useRouteCustom = () => {
           element: <RoomManagement />,
         },
       ],
+    },
+    {
+      path: '/abc',
+      element: <ABC />,
     },
     {
       path: '*',

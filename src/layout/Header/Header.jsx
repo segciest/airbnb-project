@@ -3,8 +3,12 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { path } from '../../common/path';
 import './Header.scss';
+import { handleGetLocalStorage } from '../../utils/util';
 
 const Header = () => {
+  // Lấy dữ liệu người dùng
+  let user = handleGetLocalStorage('userData');
+  console.log(user);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false);
 
@@ -67,32 +71,90 @@ const Header = () => {
               className="btn-user-menu"
               onClick={toggleMenu}
             >
-              <i className="fa-solid fa-bars"></i>
-              <i className="fa-solid fa-user"></i>
+              {user ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '5px',
+                  }}
+                >
+                  <img
+                    style={{
+                      width: '30px',
+                      height: '30px',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                    }}
+                    src={user.avatar}
+                  ></img>
+                  <p>{user.name}</p>
+                </div>
+              ) : (
+                <div>
+                  <i className="fa-solid fa-bars"></i>
+                  <i className="fa-solid fa-user"></i>
+                </div>
+              )}
             </button>
             <div
               className={`menu-user animate__animated animate__fadeInRight ${
                 isMenuVisible ? 'visible' : ''
               }`}
             >
-              <ul>
-                <li>
-                  <a href="#0">Sign Up</a>
-                </li>
-                <li>
-                  <a href="#0">Login</a>
-                </li>
-                <hr />
-                <li>
-                  <a href="#0">Gift card</a>
-                </li>
-                <li>
-                  <a href="#0">Airbnb your home</a>
-                </li>
-                <li>
-                  <a href="#0">Help Center</a>
-                </li>
-              </ul>
+              {user ? (
+                <ul>
+                  <li>
+                    <a href="#">{user.name}</a>
+                    <p>{user.email}</p>
+                  </li>
+                  <li>
+                    <a href={`/info-user/${user.id}`}>Dashboard</a>
+                  </li>
+                  <hr />
+                  <li>
+                    {user.role === 'ADMIN' ? (
+                      <a href={path.admin.base}>To Admin</a>
+                    ) : (
+                      ''
+                    )}
+                  </li>
+                  <li>
+                    <a href="">Setting</a>
+                  </li>
+                  <li>
+                    <a href="">Earning</a>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => {
+                        localStorage.removeItem('userData');
+                        window.location.reload();
+                      }}
+                    >
+                      <a href="">Sign out</a>
+                    </button>
+                  </li>
+                </ul>
+              ) : (
+                <ul>
+                  <li>
+                    <a href={path.LoginRegister}>Sign Up</a>
+                  </li>
+                  <li>
+                    <a href={path.LoginRegister}>Login</a>
+                  </li>
+                  <hr />
+                  <li>
+                    <a href="#0">Gift card</a>
+                  </li>
+                  <li>
+                    <a href="#0">Airbnb your home</a>
+                  </li>
+                  <li>
+                    <a href="#0">Help Center</a>
+                  </li>
+                </ul>
+              )}
             </div>
           </div>
         </div>

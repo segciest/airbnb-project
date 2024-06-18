@@ -208,7 +208,7 @@ const InfoUser = () => {
             {rooms != '' ? (
               <div className="listRoom">
                 {rooms?.map((item, index) => {
-                  console.log(item);
+                  // console.log(item);
                   return (
                     <BoxCustom {...item.data.content} khuVuc={''} key={index} />
                   );
