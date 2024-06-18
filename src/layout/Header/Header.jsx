@@ -128,6 +128,7 @@ const Header = () => {
                     <button
                       onClick={() => {
                         localStorage.removeItem('userData');
+                        localStorage.removeItem('token');
                         window.location.reload();
                       }}
                     >

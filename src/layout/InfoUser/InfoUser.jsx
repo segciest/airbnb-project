@@ -107,7 +107,24 @@ const InfoUser = () => {
   }, [userOrder]);
   return (
     <>
-      <Banner />
+      {/* banner */}
+      <div
+        className="pt-36 pb-32 text-center"
+        data-aos="zoom-in-up"
+        data-aos-duration="1500"
+      >
+        <h1 className="text-3xl font-bold text-[#ff5a5f] py-5">
+          <span>
+            <i
+              className="fa-brands fa-airbnb"
+              data-aos="flip-left"
+              data-aos-duration="1500"
+              data-aos-delay="900"
+            ></i>{' '}
+            Airbnb - Welcome to VietNam!
+          </span>
+        </h1>
+      </div>
       {/* layout */}
       <div className="infoLayout">
         {/* Thông tin */}

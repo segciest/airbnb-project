@@ -37,7 +37,7 @@ const FormUpdate = ({ closeModal2 }) => {
           console.log(res.data.content);
           alert('Cập nhật thành công');
           closeModal2();
-          // window.location.reload();
+          window.location.reload();
         })
         .catch((err) => {
           alert('Cập nhật thất bại');
