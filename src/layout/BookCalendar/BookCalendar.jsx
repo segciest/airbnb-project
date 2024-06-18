@@ -14,7 +14,7 @@ const BookCalendar = ({ bookedRangeDates, setBookedRangeDates }) => {
       months={1}
       ranges={bookedRangeDates}
       direction="horizontal"
-      className="p-6 flex max-h-[calc(100vh-250px)] sm:w-[300px] overflow-auto"
+      className="p-6 flex lg:max-h-full lg:w-full sm:w-1/4 sm:h-1/4 overflow-auto"
       {...options}
     />
   );
