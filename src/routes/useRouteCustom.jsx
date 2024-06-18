@@ -16,6 +16,8 @@ import RoomDetailTemplate from '../templates/RoomDetailTemplate/RoomDetailTempla
 import RoomDetail from '../pages/RoomDetail/RoomDetail';
 import InfoUser from '../layout/InfoUser/InfoUser';
 import LoginRegister from '../pages/LoginRegister/LoginRegister';
+import ListRoomList from '../layout/ListRoomList/ListRoomList';
+
 const useRouteCustom = () => {
   const route = useRoutes([
     {
@@ -25,6 +27,16 @@ const useRouteCustom = () => {
         {
           index: true,
           element: <HomePage />,
+        },
+      ],
+    },
+    {
+      path: path.detail.base,
+      element: <HomeTemplate />,
+      children: [
+        {
+          index: true,
+          element: <ListRoomList />,
         },
       ],
     },
