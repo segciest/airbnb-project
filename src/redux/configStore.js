@@ -5,8 +5,10 @@ import listRoomSlice from './slice/listRoomSlice';
 import userInfoSlice from './slice/userInfoSlice';
 import userOrderRoomSlice from './slice/userOrderRoomSlice';
 import orderedRoomSlice from './slice/orderedRoomSlice';
+import userSlice from './slice/userSlice';
 export const store = configureStore({
   reducer: {
+    userSlice,
     loadingSlice,
     searchSlice,
     listRoomSlice,

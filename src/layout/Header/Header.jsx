@@ -17,7 +17,7 @@ const Header = () => {
   };
 
   return (
-    <header className="header bg-white top-0 left-0 w-full z-[9999] fixed p-2 lg:p-0">
+    <header className="header bg-white top-0 left-0 w-full z-[999] fixed p-2 lg:p-0">
       <nav className="lg:py-2 text-white duration-500 lg:bg-white sticky costum-navbar">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto lg:p-4 px-4 py-2">
           <a href={path.homePage}>

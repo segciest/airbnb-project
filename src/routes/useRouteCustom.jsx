@@ -16,6 +16,9 @@ import RoomDetailTemplate from '../templates/RoomDetailTemplate/RoomDetailTempla
 import RoomDetail from '../pages/RoomDetail/RoomDetail';
 import InfoUser from '../layout/InfoUser/InfoUser';
 import LoginRegister from '../pages/LoginRegister/LoginRegister';
+import ChatTemplate from '../templates/ChatTemplate/ChatTemplate';
+import ChatPage from '../pages/ChatPage/ChatPage';
+import Messenger from '../layout/Messenger/Messenger';
 const useRouteCustom = () => {
   const route = useRoutes([
     {
@@ -113,6 +116,20 @@ const useRouteCustom = () => {
         {
           path: path.admin.RoomManagement,
           element: <RoomManagement />,
+        },
+      ],
+    },
+    {
+      path: path.chat,
+      element: <ChatTemplate />,
+      children: [
+        {
+          index: true,
+          element: <ChatPage />,
+        },
+        {
+          path: path.chat,
+          element: <Messenger />,
         },
       ],
     },

@@ -15,6 +15,7 @@ import {
 import { Swiper, SwiperSlide } from 'swiper/react';
 import './RoomsLocate.scss';
 
+
 const RoomsLocate = ({ item, city }) => {
   const [usefulThings, setUsefulThings] = useState([]);
   useEffect(() => {

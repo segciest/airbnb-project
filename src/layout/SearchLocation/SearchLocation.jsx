@@ -207,11 +207,11 @@ const SearchLocation = () => {
             <button
               className="bg-[#FD5B61] hover:bg-[#cc494e] transition-all text-white rounded-full px-3 py-3 flex items-center space-x-2"
               onClick={() => {
-                if (locatedAt) {
+                if (!locatedAt) {
+                  navigate(`/rooms`);
+                } else {
                   navigate(`/rooms/${locatedAt}`);
                   window.location.reload();
-                } else {
-                  navigate(`/rooms`);
                 }
               }}
             >

@@ -1,5 +1,6 @@
 export const path = {
   homePage: '/',
+  chat: '/chat',
   detail: {
     base: '/rooms/:maViTri',
   },
@@ -13,11 +14,10 @@ export const path = {
     detail: '/room-detail/:roomId',
   },
   admin: {
-
-    base: "/admin",
-    LocationManagement: "/admin/LocationManagement",
-    BookingManagement: "/admin/BookingManagement",
-    RoomManagement: "/admin/RoomManagement",
+    base: '/admin',
+    LocationManagement: '/admin/LocationManagement',
+    BookingManagement: '/admin/BookingManagement',
+    RoomManagement: '/admin/RoomManagement',
   },
   LoginRegister: '/login-register',
 };
