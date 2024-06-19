@@ -3,6 +3,7 @@ import { quanLyViTri } from "../../services/quanLyViTri";
 import { useEffect, useState } from "react";
 import { UploadOutlined } from "@ant-design/icons";
 // import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { notification } from 'antd';
 
 const LocationManagement = () => {
   const [isModalVisible, setIsModalVisible] = useState(false); // state hiển thị modal
@@ -43,17 +44,26 @@ const LocationManagement = () => {
     setEditingUser(null);
   };
 
+   // Mở thông báo với icon
+  const openNotificationWithIcon = (type, message, description) => {
+    notification[type]({
+      message: message,
+      description: description,
+    });
+  };
+  
 
 
     // Xử lý khi hoàn tất form
     const onFinish = (values) => {
-      // Sửa người dùng
+      // Sửa vị trí
       if (editingUser) {
         quanLyViTri
           .suaViTri(editingUser.id, values)
           .then((response) => {
-            console.log('User updated:', response);
-            // fetchUsers(currentPage, pageSize); // Cập nhật danh sách người dùng
+            console.log('Position updated:', response);
+            // fetchPositions(); // Cập nhật danh sách vị trí
+            openNotificationWithIcon('success', 'Thành công', 'Vị trí đã được cập nhật');
           })
           .then(() => {
             setIsModalVisible(false);
@@ -61,24 +71,27 @@ const LocationManagement = () => {
           })
           .catch((error) => {
             console.error('Error:', error);
+            openNotificationWithIcon('error', 'Lỗi', 'Cập nhật vị trí thất bại');
           });
       } else {
-
-        // Thêm người dùng mới
+        // Thêm vị trí mới
         quanLyViTri
           .themViTri(values)
           .then((response) => {
-            console.log('User added:', response);
-            // fetchUsers(currentPage, pageSize); // Cập nhật danh sách người dùng
+            console.log('Position added:', response);
+            // fetchPositions(); // Cập nhật danh sách vị trí
+            openNotificationWithIcon('success', 'Thành công', 'Vị trí đã được thêm');
           })
           .then(() => {
             setIsModalVisible(false);
           })
           .catch((error) => {
             console.error('Error:', error);
+            openNotificationWithIcon('error', 'Lỗi', 'Thêm vị trí thất bại');
           });
       }
     };
+    
 
 
       // Xử lý khi bấm nút chỉnh sửa người dùng (hiện modal lên)
@@ -91,22 +104,24 @@ const LocationManagement = () => {
   // Xử lý khi bấm nút xóa người dùng
   const handleDelete = (id) => {
     setIsLoading(true);
-
+  
     quanLyViTri
       .xoaViTri(id)
       .then((response) => {
-
-      console.log('User deleted:', response);
-        // fetchUsers(currentPage, pageSize); // Cập nhật danh sách người dùng
+        console.log('Position deleted:', response);
+        // fetchPositions(); // Cập nhật danh sách vị trí
+        openNotificationWithIcon('success', 'Thành công', 'Vị trí đã được xóa');
       })
       .catch((error) => {
         console.error('Error:', error);
+        openNotificationWithIcon('error', 'Lỗi', 'Xóa vị trí thất bại');
       })
       .finally(() => {
         setIsLoading(false);
       });
   };
-
+  
+ // Xử lý khi upload hình ảnh
   const handleUpload = (info) => {
     if (info.file.status === "done") {
       // Get this url from response in real world.
@@ -114,18 +129,7 @@ const LocationManagement = () => {
     }
   };
 
-  // const showDeleteConfirm = (id) => {
-  //   Modal.confirm({
-  //     title: 'Bạn có chắc muốn xóa người dùng này?',
-  //     icon: <ExclamationCircleOutlined />,
-  //     okText: 'Đồng ý',
-  //     okType: 'danger',
-  //     cancelText: 'Hủy',
-  //     onOk() {
-  //       handleDelete(id);
-  //     },
-  //   });
-  // };
+  
   
   // Các cột của bảng
   const columns = [
@@ -133,28 +137,36 @@ const LocationManagement = () => {
       title: "Tên",
       dataIndex: "tenViTri",
       key: "tenViTri",
+      className:
+      'bg-gray-300',
     },
     {
       title: "Mã số",
       dataIndex: "tinhThanh",
       key: "tinhThanh",
+      className:
+      'bg-gray-300',
     },
     {
       title: "Quốc gia",
       dataIndex: "quocGia",
       key: "quocGia",
+      className:
+      'bg-gray-300',
     },
     {
       title: "Hình ảnh",
       dataIndex: "hinhAnh",
       key: "hinhAnh",
       render: (text) => <img src={text} alt="Hình ảnh" className="w-16 h-16" />,
-      
+      className:
+      'bg-gray-300',
     },
     {
       title: 'Hành động',
       key: 'action',
-      className: 'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-outt',
+      className:
+      'bg-gray-300',
       render: (text, record) => (
         <Space size="middle">
           <Button type="primary" className="hover:bg-blue-700" onClick={() => handleEdit(record)}>
@@ -192,25 +204,26 @@ const LocationManagement = () => {
           Thêm vị trí
         </Button>
         <div className="flex items-center border-2 border-gray-300 rounded-full overflow-hidden w-80">
-          <Input.Search placeholder="Search..." enterButton />
+          <Input.Search placeholder="Search..." enterButton ={<i className="fa-solid fa-magnifying-glass"></i>} className="ml-3 py-1 px-2 leading-tight focus:outline-none" />
         </div>
       </div>
 
       <Modal
-        title="Thêm vị trí mới"
+        title={editingUser ? "Chỉnh sửa vị trí" : "Thêm vị trí mới"}
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
        
       >
         <Form name="add_member" onFinish={onFinish} layout="vertical">
-          <Form.Item
+          {/* <Form.Item
             label="ID"
             name="id"
             rules={[{ required: true, message: "Vui lòng nhập ID!" }]}
+            initialValues={editingUser ? editingUser : {}}
           >
             <Input />
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
             label="Tên vị trí"
             name="tenViTri"
@@ -250,8 +263,8 @@ const LocationManagement = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Thêm
+          <Button type="primary" htmlType="submit">
+              {editingUser ? "Cập nhật" : "Thêm"}
             </Button>
           </Form.Item>
         </Form>
@@ -264,6 +277,7 @@ const LocationManagement = () => {
           columns={columns}
           rowKey={(record) => record.hinhAnh}
           loading={isLoading}
+          scroll={{ x: 'calc(400px + 20%)' }}
         />
       </div>
     </div>

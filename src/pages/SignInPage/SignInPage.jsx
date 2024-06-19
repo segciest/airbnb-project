@@ -1,18 +1,18 @@
-// import React, { useContext } from 'react'
-
+import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
 // import { AlertContext } from '../../App';
-import { handleGetValueUserData } from '../../redux/slice/userSlice';
-// import { saveLocalStorage } from '../../utils/utils';
-import InputText from '../../components/InputText/InputText';
-import { path } from '../../common/path';
-import { useNavigate } from 'react-router-dom';
+import {
+  handleGetValueUserData,
+  handleGetValueUserToken,
+} from '../../redux/slice/userSlice';
+import { Helmet } from 'react-helmet';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { path } from '../../common/path';
+import InputText from '../../components/InputText/InputText';
 import { auth } from '../../services/auth';
 import { saveLocalStorage } from '../../utils/util';
-import { Helmet } from 'react-helmet';
 const SignInPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -32,13 +32,15 @@ const SignInPage = () => {
           console.log(res);
           // handleAlert('success', 'Đăng nhập thành công');
           navigate(path.homePage);
-          saveLocalStorage('userData', res.data.content.token);
+          saveLocalStorage('userData', res.data.content.user);
+          saveLocalStorage('token', res.data.content.token);
           saveLocalStorage('LOGIN_USER', res.data.content);
-          dispatch(handleGetValueUserData(res.data.content));
+          dispatch(handleGetValueUserData(res.data.content.user));
+          dispatch(handleGetValueUserToken(res.data.content.token));
           resetForm();
         } catch (error) {
           console.log(error);
-          // handleAlert('error', error.response.data.content);
+          handleAlert('error', error.response.data.content);
         }
       },
       validationSchema: Yup.object({

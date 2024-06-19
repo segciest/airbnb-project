@@ -14,23 +14,6 @@
     display: block;
   }
 }
-// .ant-tabs-nav::before {
-//   background-color: black !important;
-// }
-// .ant-tabs-nav-wrap {
-//   &::before {
-//     background-color: black !important;
-//   }
-// }
-// .ant-tabs-nav-list {
-//   .ant-tabs-tab-active {
-//     color: black !important;
-//   }
-// }
-// .footer .ant-tabs-nav::before {
-//   content: '';
-//   background-color: black !important;
-// }
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   color: black !important;
 }
@@ -133,4 +116,7 @@
       margin-top: 1.5rem;
     }
   }
+}
+.ant-tabs-nav-wrap {
+  justify-content: center;
 }

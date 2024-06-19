@@ -1,12 +1,16 @@
 import * as Yup from 'yup';
-import { useFormik } from 'formik';
+import { Field, useFormik, useFormikContext } from 'formik';
 import InputText from '../../components/InputCustom/InputText';
-import { Switch } from 'antd';
+import { DatePicker, Switch } from 'antd';
 import { userManagement } from '../../services/userManagement';
 import { useParams } from 'react-router-dom';
+import { handleGetLocalStorage } from '../../utils/util';
+import { useState } from 'react';
 
 const FormUpdate = ({ closeModal2 }) => {
   const { idUser } = useParams();
+  let [userGender, setUserGender] = useState(true);
+  let user = handleGetLocalStorage('userData');
   const {
     handleBlur,
     handleChange,
@@ -17,26 +21,27 @@ const FormUpdate = ({ closeModal2 }) => {
     setFieldValue,
   } = useFormik({
     initialValues: {
-      id: idUser,
-      name: '',
-      email: '',
-      phone: '',
-      gender: true,
-      role: '',
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      gender: user.gender,
+      role: user.role,
+      birthday: user.birthday,
     },
     onSubmit: async (values) => {
-      try {
-        console.log(values);
-        userManagement.updateUser(idUser, values).then((res) => {
+      console.log(values);
+      userManagement
+        .updateUser(idUser, values)
+        .then((res) => {
           console.log(res.data.content);
           alert('Cập nhật thành công');
+          closeModal2();
+          window.location.reload();
+        })
+        .catch((err) => {
+          alert('Cập nhật thất bại');
         });
-        closeModal2();
-        window.location.reload();
-      } catch (error) {
-        console.log(error);
-        alert('Cập nhật thất bại');
-      }
     },
     validationSchema: Yup.object({
       id: Yup.string().required('Vui lòng không bỏ trống'),
@@ -97,20 +102,39 @@ const FormUpdate = ({ closeModal2 }) => {
           placeholder="Vui lòng nhập vai trò"
           value={values.role}
         />
+
+        {/* Birthday */}
+        <div>
+          <label htmlFor="" className="block mb-2">
+            Ngày sinh
+          </label>
+          {/* về nhà validation dữ liệu của datepicker nếu người dùng chọn ngày trong quá khứ sẽ báo lỗi  */}
+          <DatePicker
+            format="DD-MM-YYYY"
+            onChange={(date, dateString) => {
+              // console.log(date);
+              // console.log(dateString);
+              setFieldValue('birthday', dateString);
+            }}
+          />
+        </div>
         {/* gender */}
         <div>
           <label htmlFor="" className="block mb-2">
-            Gender
+            Giới tính
           </label>
           <Switch
-            onChange={(checked) => {
+            onChange={(checked, event) => {
               console.log(checked);
               setFieldValue('gender', checked);
-              // console.log(event.target.value);
+              setUserGender(checked);
+              console.log(event.target.value);
             }}
             value={values.gender}
           />
+          <span className="px-3">{userGender == true ? 'Nam' : 'Nữ'}</span>
         </div>
+
         <div>
           <button
             className="bg-black text-white px-5 py-2 rounded-md w-full text-center"

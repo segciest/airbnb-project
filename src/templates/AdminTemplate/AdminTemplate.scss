@@ -1,17 +1,26 @@
 .custom-menu {
-    background-color: #F08080;
-    color: white;
-    margin-top: 100px;
-  }
-  
-  .custom-menu .ant-menu-item {
-    color: white !important;
-  }
-  
-  .custom-menu .ant-menu-item-selected {
-    background-color: #DC143C !important;
-    color: white !important;
-  }
-  :where(.css-dev-only-do-not-override-j9bb5n).ant-layout .ant-layout-sider-children {
-    background-color: #F08080;
-  }
+  background-color: #f08080;
+  color: white;
+  margin-top: 100px;
+}
+
+.custom-menu .ant-menu-item {
+  color: white !important;
+}
+
+.custom-menu .ant-menu-item-selected {
+  background-color: #dc143c !important;
+  color: white !important;
+}
+:where(.css-dev-only-do-not-override-j9bb5n).ant-layout
+  .ant-layout-sider-children {
+  background-color: #f08080;
+}
+:where(.css-dev-only-do-not-override-j9bb5n).ant-input-search .ant-input:hover {
+  border-color: none !important;
+}
+:where(.css-dev-only-do-not-override-j9bb5n).ant-btn-default:not(:disabled):not(
+    .ant-btn-disabled
+  ):hover {
+  border-color: none !important;
+}

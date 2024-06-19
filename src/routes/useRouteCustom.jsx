@@ -19,6 +19,9 @@ import LoginRegister from '../pages/LoginRegister/LoginRegister';
 import ChatTemplate from '../templates/ChatTemplate/ChatTemplate';
 import ChatPage from '../pages/ChatPage/ChatPage';
 import Messenger from '../layout/Messenger/Messenger';
+import ListRoomList from '../layout/ListRoomList/ListRoomList';
+import LoginRegisterTemplate from '../templates/LoginRegisterTemplate/LoginRegisterTemplate';
+
 const useRouteCustom = () => {
   const route = useRoutes([
     {
@@ -28,6 +31,16 @@ const useRouteCustom = () => {
         {
           index: true,
           element: <HomePage />,
+        },
+      ],
+    },
+    {
+      path: path.detail.base,
+      element: <HomeTemplate />,
+      children: [
+        {
+          index: true,
+          element: <ListRoomList />,
         },
       ],
     },
@@ -95,7 +108,13 @@ const useRouteCustom = () => {
     },
     {
       path: path.LoginRegister,
-      element: <LoginRegister />,
+      element: <LoginRegisterTemplate />,
+      children: [
+        {
+          index: true,
+          element: <LoginRegister />,
+        },
+      ],
     },
     {
       path: path.admin.base,

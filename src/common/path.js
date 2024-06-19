@@ -2,7 +2,7 @@ export const path = {
   homePage: '/',
   chat: '/chat',
   detail: {
-    base: '/rooms/:maViTri',
+    base: '/room/:maViTri',
   },
   about: '/info-user/:idUser',
   services: '/services',

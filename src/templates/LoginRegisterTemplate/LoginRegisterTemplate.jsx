@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import Header from '../../layout/Header/Header';
 import { Outlet } from 'react-router-dom';
+import Footer from '../../layout/Footer/Footer';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   handleTurnOffLoading,
   handleTurnOnLoading,
 } from '../../redux/slice/loadingSlice';
 import { Loading } from '../../components/Loading/Loading';
 
-const ChatTemplate = () => {
+const LoginRegisterTemplate = () => {
   const isLoading = useSelector((state) => state.loadingSlice.isLoading);
   const dispatch = useDispatch();
 
@@ -20,9 +22,11 @@ const ChatTemplate = () => {
   return (
     <>
       {isLoading && <Loading />}
+      <Header />
       <Outlet />
+      <Footer />
     </>
   );
 };
 
-export default ChatTemplate;
+export default LoginRegisterTemplate;
