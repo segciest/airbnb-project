@@ -1,0 +1,50 @@
+.infoLayout {
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 35% 65%;
+  margin-bottom: 50px;
+  .layout1 {
+    margin: 0 auto;
+  }
+  .layout2 {
+    // margin: 0 auto;
+  }
+}
+.room {
+  width: 760px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+      rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    cursor: pointer;
+  }
+  position: relative;
+}
+.listRoom {
+  width: 760px;
+  display: unset !important;
+  grid-template-rows: unset !important;
+  gap: unset !important;
+}
+.roomName {
+  font-size: 20px;
+  line-height: 28px;
+}
+.roomAlias {
+  font-size: 14px;
+  line-height: 22px;
+}
+.roomPrice {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+.ant-modal-footer {
+  display: none !important;
+}

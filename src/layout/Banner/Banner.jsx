@@ -13,7 +13,7 @@ const Banner = () => {
           muted={true}
         >
           <source
-            src="./src/assets/video/Airbnb-VietNam-Banner.mp4"
+            src="https://youtu.be/uQm3-6ZV4QQ?si=w5qLe0mnOdxfwvZZ"
             type="video/mp4"
           />
           Your browser does not support the video tag.

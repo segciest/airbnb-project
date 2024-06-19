@@ -1,6 +1,8 @@
 import { message } from 'antd';
 import { createContext } from 'react';
 import useRouteCustom from './routes/useRouteCustom';
+import AOSProvider from './utils/AOSProvider.jsx';
+import BackToTop from './components/BackToTop/BackToTop.jsx';
 
 export const AlertContext = createContext();
 
@@ -12,8 +14,11 @@ function App() {
   };
   return (
     <AlertContext.Provider value={{ handleAlert }}>
-      {contextHolder}
-      {myRoutes}
+      <AOSProvider>
+        {contextHolder}
+        {myRoutes}
+        <BackToTop />
+      </AOSProvider>
     </AlertContext.Provider>
   );
 }
