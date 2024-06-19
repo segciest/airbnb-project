@@ -1,18 +1,14 @@
 import 'animate.css';
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { path } from '../../common/path';
 import './Header.scss';
-
 import { useSelector } from 'react-redux';
-
-import { handleGetLocalStorage } from '../../utils/util';
 
 const Header = () => {
   // Lấy dữ liệu người dùng từ localStorage
   // let user = handleGetLocalStorage('userData');
   let { user, token } = useSelector((state) => state.userSlice);
-  console.log(user);
 
   // State để điều khiển hiển thị menu desktop
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -31,9 +27,11 @@ const Header = () => {
     setIsMobileMenuVisible(!isMobileMenuVisible);
   };
 
+  const navigate = useNavigate();
+
   return (
-    <header className="header bg-white top-0 left-0 w-full z-[9999] fixed p-2 lg:p-0">
-      <nav className="lg:py-2 text-white duration-500 lg:bg-white sticky costum-navbar">
+    <header className="header bg-white top-0 left-0 w-full z-[999] fixed p-2 lg:p-0">
+      <nav className="text-white duration-500 lg:bg-white sticky costum-navbar">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto lg:p-4 px-4 py-2">
           <a href={path.homePage}>
             <img
@@ -64,7 +62,7 @@ const Header = () => {
                   <NavLink to={path.homePage}>Home</NavLink>
                 </li>
                 <li>
-                  <NavLink to={path.about}>About</NavLink>
+                  <NavLink to={'/about'}>About</NavLink>
                 </li>
                 <li>
                   <NavLink to={path.services}>Services</NavLink>
@@ -92,6 +90,7 @@ const Header = () => {
                   style={{
                     display: 'flex',
                     gap: '5px',
+                    alignItems: 'center',
                   }}
                 >
                   <img
@@ -109,7 +108,6 @@ const Header = () => {
               ) : (
                 // Nếu chưa đăng nhập thì hiển thị biểu tượng menu và biểu tượng người dùng
                 <div>
-                  <i className="fa-solid fa-bars"></i>
                   <i className="fa-solid fa-user"></i>
                 </div>
               )}
@@ -140,10 +138,10 @@ const Header = () => {
                     )}
                   </li>
                   <li>
-                    <a href="">Setting</a>
+                    <a href="#0">Setting</a>
                   </li>
                   <li>
-                    <a href="">Earning</a>
+                    <a href="#0">Earning</a>
                   </li>
                   {/* Nút đăng xuất */}
                   <li>
@@ -151,6 +149,8 @@ const Header = () => {
                       onClick={() => {
                         localStorage.removeItem('userData');
                         localStorage.removeItem('token');
+                        localStorage.removeItem('LOGIN_USER');
+                        navigate(path.homePage);
                         window.location.reload();
                       }}
                     >
@@ -162,10 +162,10 @@ const Header = () => {
                 // Nếu chưa đăng nhập, hiển thị menu đăng ký, đăng nhập và các liên kết hỗ trợ
                 <ul>
                   <li>
-                    <a href={path.LoginRegister}>Sign Up</a>
+                    <a href={path.LoginRegister}>Login</a>
                   </li>
                   <li>
-                    <a href={path.LoginRegister}>Login</a>
+                    <a href={path.LoginRegister}>Sign Up</a>
                   </li>
                   <hr />
                   <li>

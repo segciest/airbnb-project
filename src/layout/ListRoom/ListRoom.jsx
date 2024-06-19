@@ -4,6 +4,7 @@ import { phongServ } from '../../services/phongServ';
 import SearchLocation from '../SearchLocation/SearchLocation';
 import dayjs from 'dayjs';
 import CardList from '../CardList/CardList';
+import { Helmet } from 'react-helmet';
 
 const ListRoom = () => {
   const { dateRange, locateAt, numPeop } = useSelector((state) => {
@@ -25,6 +26,9 @@ const ListRoom = () => {
         data-aos="zoom-in-up"
         data-aos-duration="1500"
       >
+        <Helmet>
+          <title>{`Airbnb | Vacation rentals, cabins, beach houses, & more`}</title>
+        </Helmet>
         <h1 className="text-3xl font-bold text-[#ff5a5f] py-5">
           <span>
             <i

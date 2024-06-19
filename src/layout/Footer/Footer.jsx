@@ -3,20 +3,20 @@ import './footer.scss';
 
 const Footer = () => {
   const data = [
-    { id: 1, label: 'Canmore', content: 'Nhà gỗ chalet cho thuê' },
-    { id: 2, label: 'Benalmadena', content: 'Nhà cho thuê' },
-    { id: 3, label: 'Marbella', content: 'Nhà nghỉ thôn dã cho thuê' },
-    { id: 4, label: 'Mijas', content: 'Căn hộ cho thuê' },
+    { id: 1, label: 'Canmore', content: 'Wooden chalet for rent' },
+    { id: 2, label: 'Benalmadena', content: 'House for rent' },
+    { id: 3, label: 'Marbella', content: 'Country house for rent' },
+    { id: 4, label: 'Mijas', content: 'Apartment for rent' },
     {
       id: 5,
       label: 'Prescott',
-      content: 'Chỗ ở cho thuê phù hợp với thú cưng',
+      content: 'Pet-friendly rental accommodation',
     },
-    { id: 6, label: 'Scottsdale', content: 'Nhà nghỉ dưỡng cho thuê' },
-    { id: 7, label: 'Tucson', content: 'Căn hộ cho thuê' },
-    { id: 8, label: 'Jasper', content: 'Cabin cho thuê' },
-    { id: 9, label: 'Moutain view', content: 'Nhà nghỉ thôn dã cho thuê' },
-    { id: 10, label: 'Devonport', content: 'Nhà nghỉ dưỡng cho thuê' },
+    { id: 6, label: 'Scottsdale', content: 'Vacation home for rent' },
+    { id: 7, label: 'Tucson', content: 'Apartment for rent' },
+    { id: 8, label: 'Jasper', content: 'Cabins for rent' },
+    { id: 9, label: 'Moutain view', content: 'Country house for rent' },
+    { id: 10, label: 'Devonport', content: 'Vacation home for rent' },
   ];
 
   const renderTabContent = (data) => {
@@ -39,37 +39,37 @@ const Footer = () => {
   const items = [
     {
       key: '1',
-      label: 'Phổ biến',
+      label: 'Popular',
       children: renderTabContent(data),
     },
     {
       key: '2',
-      label: 'Văn hoá và nghệ thuật',
+      label: 'Culture and arts',
       children: renderTabContent(data),
     },
     {
       key: '3',
-      label: 'Ngoài trời',
+      label: 'Out side',
       children: renderTabContent(data),
     },
     {
       key: '4',
-      label: 'Dãy núi',
+      label: 'Mountains',
       children: renderTabContent(data),
     },
     {
       key: '5',
-      label: 'Bãi biển',
+      label: 'Beach',
       children: renderTabContent(data),
     },
     {
       key: '6',
-      label: 'Danh mục',
+      label: 'Category',
       children: renderTabContent(data),
     },
     {
       key: '7',
-      label: 'Những điều nên trải nghiệm',
+      label: 'Things to experience',
       children: renderTabContent(data),
     },
   ];
@@ -81,35 +81,35 @@ const Footer = () => {
       <div className="bottom-footer bg-white border-t border-gray-200 py-6">
         <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-sm text-gray-600">
           <div className="footer-column">
-            <h3 className="font-bold text-gray-900 mb-2">Hỗ trợ</h3>
+            <h3 className="font-bold text-gray-900 mb-2">Support</h3>
             <ul>
-              <li>Trung tâm trợ giúp</li>
+              <li>Help Center</li>
               <li>AirCover</li>
-              <li>Chống phân biệt đối xử</li>
-              <li>Hỗ trợ người khuyết tật</li>
-              <li>Các tùy chọn hủy</li>
-              <li>Báo cáo lo ngại của khu dân cư</li>
+              <li>Anti-discrimination</li>
+              <li>Support people with disabilities</li>
+              <li>Cancellation options</li>
+              <li>Report neighborhood concerns</li>
             </ul>
           </div>
           <div className="footer-column">
-            <h3 className="font-bold text-gray-900 mb-2">Đón tiếp khách</h3>
+            <h3 className="font-bold text-gray-900 mb-2">Welcome guests</h3>
             <ul>
-              <li>Cho thuê nhà trên Airbnb</li>
-              <li>AirCover cho Chủ nhà</li>
-              <li>Tài nguyên về đón tiếp khách</li>
-              <li>Diễn đàn cộng đồng</li>
-              <li>Đón tiếp khách có trách nhiệm</li>
-              <li>Tham gia khóa học miễn phí về công việc Đón tiếp khách</li>
+              <li>Rent a house on Airbnb</li>
+              <li>AirCover for Homeowners</li>
+              <li>Resources for welcoming guests</li>
+              <li>Community forum</li>
+              <li>Welcoming guests responsibly</li>
+              <li>Take a free course on Welcoming Guests</li>
             </ul>
           </div>
           <div className="footer-column">
             <h3 className="font-bold text-gray-900 mb-2">Airbnb</h3>
             <ul>
-              <li>Trang tin tức</li>
-              <li>Tính năng mới</li>
-              <li>Cơ hội nghề nghiệp</li>
-              <li>Nhà đầu tư</li>
-              <li>Chỗ ở khẩn cấp Airbnb.org</li>
+              <li>News sites</li>
+              <li>New feature</li>
+              <li>Career opportunities</li>
+              <li>Investors</li>
+              <li>Airbnb.org emergency accommodation</li>
             </ul>
           </div>
         </div>
@@ -117,14 +117,14 @@ const Footer = () => {
           <div className="flex justify-center space-x-4 mb-4">
             <div>© 2024 Airbnb, Inc.</div>
             <div>·</div>
-            <div>Quyền riêng tư</div>
+            <div>Privacy</div>
             <div>·</div>
-            <div>Điều khoản</div>
+            <div>Rules</div>
             <div>·</div>
-            <div>Sơ đồ trang web</div>
+            <div>Sitemap</div>
           </div>
           <div className="flex justify-center space-x-4">
-            <div>Tiếng Việt (VN)</div>
+            <div>English (US)</div>
             <div>$ USD</div>
             <div className="flex space-x-2">
               <a href="#">

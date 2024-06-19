@@ -1,0 +1,123 @@
+.side-layout {
+  .side-menu {
+    min-width: 75px;
+    max-width: 75px;
+    height: 100vh;
+    min-height: 570px;
+    background-color: #ffffff;
+    z-index: 9;
+    box-shadow: 0 2px 4px rgba(15, 34, 58, 0.12);
+
+    .navbar-brand-box {
+      .logo {
+        display: block;
+        line-height: 70px;
+        color: #ff5a5f;
+        font-size: 35px;
+      }
+    }
+    .nav {
+      display: block;
+      line-height: 70px;
+      color: #878a92;
+      font-size: 25px;
+      text-align: center;
+
+      li:hover {
+        color: #ff5a5f;
+      }
+    }
+
+    .profile-user-dropdown {
+      .profile-user {
+        height: 36px;
+        width: 36px;
+        background-color: #f0eff5;
+        padding: 3px;
+      }
+    }
+  }
+  .chat-side-bar {
+    @media (min-width: 992px) {
+      display: block;
+      min-width: 380px;
+      max-width: 380px;
+    }
+    @media (max-width: 640px) {
+      display: none;
+      min-width: 380px;
+      max-width: 380px;
+    }
+    height: 100vh;
+    background-color: #f5f7fb;
+
+    .chat-carousel {
+      @media (max-width: 1024px) {
+        display: none;
+      }
+      .slick-slider {
+        .slick-list {
+          .slick-track {
+            height: 90px;
+            .slick-slide {
+              width: 71.75px !important;
+              margin-right: 12px;
+            }
+          }
+        }
+      }
+    }
+    .chat-message-list {
+      li {
+        a {
+          position: relative;
+          display: block;
+          padding: 15px 20px;
+          color: #7a7f9a;
+          transition: all 0.4s;
+          border-top: 1px solid #f5f7fb;
+          border-radius: 4px;
+        }
+        &:hover {
+          background-color: #e6ebf5;
+        }
+      }
+    }
+  }
+  :where(.css-dev-only-do-not-override-j9bb5n).ant-badge .ant-badge-dot {
+    border: 1px solid white;
+    top: 38px;
+    left: 30px;
+    width: 8px;
+    height: 8px;
+  }
+}
+
+.dropdown-menu {
+  .dropdown-item {
+    width: 100%;
+    padding: 0.35rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    color: black;
+    i {
+      color: #7a7f9a;
+    }
+    &:hover {
+      text-decoration: none;
+      background-color: #f8f9fa;
+    }
+  }
+}
+.ant-popover {
+  .ant-popover-content {
+    .ant-popover-inner {
+      width: 160px;
+      height: 140px;
+    }
+  }
+}

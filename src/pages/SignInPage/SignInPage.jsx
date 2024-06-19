@@ -1,20 +1,23 @@
-// import React, { useContext } from 'react'
-
+import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
 // import { AlertContext } from '../../App';
-import { handleGetValueUserData } from '../../redux/slice/userSlice';
-// import { saveLocalStorage } from '../../utils/utils';
-import InputText from '../../components/InputText/InputText';
-import { path } from '../../common/path';
-import { useNavigate } from 'react-router-dom';
+import {
+  handleGetValueUserData,
+  handleGetValueUserToken,
+} from '../../redux/slice/userSlice';
+import { Helmet } from 'react-helmet';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { path } from '../../common/path';
+import InputText from '../../components/InputText/InputText';
 import { auth } from '../../services/auth';
 import { saveLocalStorage } from '../../utils/util';
 const SignInPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  // const {handleAlert } = useContext(AlertContext)
+  //   console.log(handleAlert);
   const { handleBlur, handleChange, handleSubmit, values, errors, touched } =
     useFormik({
       initialValues: {
@@ -23,6 +26,7 @@ const SignInPage = () => {
       },
       onSubmit: async (values, { resetForm }) => {
         console.log(values);
+        // khi sử dụng async await luôn có một try catch bọc lại để bắt các vấn đề về lỗi
         try {
           const res = await auth.sigin(values);
           console.log(res);
@@ -30,9 +34,9 @@ const SignInPage = () => {
           navigate(path.homePage);
           saveLocalStorage('userData', res.data.content.user);
           saveLocalStorage('token', res.data.content.token);
+          saveLocalStorage('LOGIN_USER', res.data.content);
           dispatch(handleGetValueUserData(res.data.content.user));
           dispatch(handleGetValueUserToken(res.data.content.token));
-
           resetForm();
         } catch (error) {
           console.log(error);
@@ -44,9 +48,11 @@ const SignInPage = () => {
         password: Yup.string().required('Vui lòng không bỏ trống'),
       }),
     });
-
   return (
     <div className="formContainer signIn">
+      <Helmet>
+        <title>Airbnb - Sign In - Sign Up</title>
+      </Helmet>
       <form onSubmit={handleSubmit}>
         <h1>Sign In</h1>
         <div className="formIcon">

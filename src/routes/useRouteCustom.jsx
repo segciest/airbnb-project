@@ -16,8 +16,11 @@ import RoomDetailTemplate from '../templates/RoomDetailTemplate/RoomDetailTempla
 import RoomDetail from '../pages/RoomDetail/RoomDetail';
 import InfoUser from '../layout/InfoUser/InfoUser';
 import LoginRegister from '../pages/LoginRegister/LoginRegister';
+import ChatTemplate from '../templates/ChatTemplate/ChatTemplate';
+import ChatPage from '../pages/ChatPage/ChatPage';
+import Messenger from '../layout/Messenger/Messenger';
 import ListRoomList from '../layout/ListRoomList/ListRoomList';
-import ABC from '../pages/ABC/ABC';
+import LoginRegisterTemplate from '../templates/LoginRegisterTemplate/LoginRegisterTemplate';
 
 const useRouteCustom = () => {
   const route = useRoutes([
@@ -105,7 +108,13 @@ const useRouteCustom = () => {
     },
     {
       path: path.LoginRegister,
-      element: <LoginRegister />,
+      element: <LoginRegisterTemplate />,
+      children: [
+        {
+          index: true,
+          element: <LoginRegister />,
+        },
+      ],
     },
     {
       path: path.admin.base,
@@ -130,8 +139,18 @@ const useRouteCustom = () => {
       ],
     },
     {
-      path: '/abc',
-      element: <ABC />,
+      path: path.chat,
+      element: <ChatTemplate />,
+      children: [
+        {
+          index: true,
+          element: <ChatPage />,
+        },
+        {
+          path: path.chat,
+          element: <Messenger />,
+        },
+      ],
     },
     {
       path: '*',

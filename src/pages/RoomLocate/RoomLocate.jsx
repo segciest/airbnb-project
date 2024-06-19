@@ -7,6 +7,7 @@ import RoomsLocate from '../../layout/RoomsLocate/RoomsLocate';
 import SearchLocation from '../../layout/SearchLocation/SearchLocation';
 import { phongServ } from '../../services/phongServ';
 import { viTriServ } from '../../services/viTriServ';
+import { Helmet } from 'react-helmet';
 
 const RoomLocate = () => {
   const [roomCity, setRoomCity] = useState([]);
@@ -31,6 +32,9 @@ const RoomLocate = () => {
         data-aos="zoom-in-up"
         data-aos-duration="1500"
       >
+        <Helmet>
+          <title>{`Airbnb - ${cityNoSlug}`}</title>
+        </Helmet>
         <h1 className="text-3xl font-bold text-[#ff5a5f] py-5">
           <span>
             <i

@@ -1,5 +1,6 @@
 export const path = {
   homePage: '/',
+  chat: '/chat',
   detail: {
     base: '/room/:maViTri',
   },

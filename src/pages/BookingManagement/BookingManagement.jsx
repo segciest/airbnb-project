@@ -1,26 +1,25 @@
-import { Button, Form, Input, Modal, Popconfirm, Space, Table } from "antd";
-import { useEffect, useState } from "react";
+import { Button, Form, Input, Modal, Popconfirm, Space, Table } from 'antd';
+import { useEffect, useState } from 'react';
 
-import { quanLyDatPhong } from "../../services/quanLyDatPhong";
+import { quanLyDatPhong } from '../../services/quanLyDatPhong';
 import { notification } from 'antd';
 
 const BookingManagement = () => {
   const [isModalVisible, setIsModalVisible] = useState(false); // State để quản lý hiển thị modal thêm/sửa đặt phòng
   const [bookings, setBookings] = useState([]); // State để lưu danh sách đặt phòng
-  const [editingBooking, setEditingBooking] = useState(null);  // State để lưu thông tin đặt phòng đang được chỉnh sửa
+  const [editingBooking, setEditingBooking] = useState(null); // State để lưu thông tin đặt phòng đang được chỉnh sửa
   const [isLoading, setIsLoading] = useState(false); // State để theo dõi trạng thái loading khi tương tác với server
   const [searchKeyword, setSearchKeyword] = useState(''); // Từ khóa tìm kiếm
   const [form] = Form.useForm();
 
-   // Hook useEffect để fetch danh sách đặt phòng từ server khi component mount
+  // Hook useEffect để fetch danh sách đặt phòng từ server khi component mount
   useEffect(() => {
     const fetchBookings = async () => {
       try {
         const response = await quanLyDatPhong.layDanhSachDatPhong();
         setBookings(response.data.content);
-        console.log(response.data.content);
       } catch (error) {
-        console.error("Error fetching bookings:", error);
+        console.error('Error fetching bookings:', error);
       }
     };
 
@@ -41,7 +40,6 @@ const BookingManagement = () => {
       openNotificationWithIcon('success', 'tìm thấy người dùng');
     } catch (error) {
       console.error('Error fetching user data:', error);
-     
     } finally {
       setIsLoading(false);
     }
@@ -62,13 +60,13 @@ const BookingManagement = () => {
     fetchUserData(searchKeyword);
     // setCurrentPage(1); // Reset to first page when searching
   };
-  
-   // Hiển thị modal thêm/sửa đặt phòng
+
+  // Hiển thị modal thêm/sửa đặt phòng
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-    // Hủy bỏ modal thêm/sửa đặt phòng
+  // Hủy bỏ modal thêm/sửa đặt phòng
   const handleCancel = () => {
     setIsModalVisible(false);
     setEditingBooking(null);
@@ -89,8 +87,8 @@ const BookingManagement = () => {
       description: description,
     });
   };
-  
-   // Xử lý khi submit form (thêm mới hoặc cập nhật đặt phòng)
+
+  // Xử lý khi submit form (thêm mới hoặc cập nhật đặt phòng)
   const onFinish = (values) => {
     setIsLoading(true);
     if (editingBooking) {
@@ -98,12 +96,15 @@ const BookingManagement = () => {
       quanLyDatPhong
         .suaDatPhong(editingBooking.id, values)
         .then((response) => {
-          console.log('Booking updated:', response);
           const updatedBookings = bookings.map((booking) =>
             booking.id === editingBooking.id ? response.data.content : booking
           );
           setBookings(updatedBookings);
-          openNotificationWithIcon('success', 'Thành công', 'Đặt phòng đã được cập nhật');
+          openNotificationWithIcon(
+            'success',
+            'Thành công',
+            'Đặt phòng đã được cập nhật'
+          );
         })
         .finally(() => {
           setIsModalVisible(false);
@@ -112,16 +113,23 @@ const BookingManagement = () => {
         })
         .catch((error) => {
           console.error('Error:', error);
-          openNotificationWithIcon('error', 'Lỗi', 'Cập nhật đặt phòng thất bại');
+          openNotificationWithIcon(
+            'error',
+            'Lỗi',
+            'Cập nhật đặt phòng thất bại'
+          );
         });
     } else {
       // Add new booking
       quanLyDatPhong
         .themDatPhong(values)
         .then((response) => {
-          console.log('Booking added:', response);
           setBookings([...bookings, response.data.content]);
-          openNotificationWithIcon('success', 'Thành công', 'Đặt phòng đã được thêm');
+          openNotificationWithIcon(
+            'success',
+            'Thành công',
+            'Đặt phòng đã được thêm'
+          );
         })
         .finally(() => {
           setIsModalVisible(false);
@@ -133,17 +141,20 @@ const BookingManagement = () => {
         });
     }
   };
-  
-   // Xử lý khi người dùng xóa đặt phòng
+
+  // Xử lý khi người dùng xóa đặt phòng
   const handleDelete = (id) => {
     setIsLoading(true);
-  
+
     quanLyDatPhong
       .xoaDatPhong(id)
       .then((response) => {
-        console.log('Booking deleted:', response);
         setBookings(bookings.filter((booking) => booking.id !== id));
-        openNotificationWithIcon('success', 'Thành công', 'Đặt phòng đã được xóa');
+        openNotificationWithIcon(
+          'success',
+          'Thành công',
+          'Đặt phòng đã được xóa'
+        );
       })
       .finally(() => {
         setIsLoading(false);
@@ -153,58 +164,49 @@ const BookingManagement = () => {
         openNotificationWithIcon('error', 'Lỗi', 'Xóa đặt phòng thất bại');
       });
   };
-  
 
-
- // Các cột dữ liệu cho Table
+  // Các cột dữ liệu cho Table
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      className:
-      'bg-gray-300',
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+      className: 'bg-gray-300',
     },
     {
-      title: "Mã phòng",
-      dataIndex: "maPhong",
-      key: "maPhong",
-      className:
-      'bg-gray-300',
+      title: 'Mã phòng',
+      dataIndex: 'maPhong',
+      key: 'maPhong',
+      className: 'bg-gray-300',
     },
     {
-      title: "Ngày đến",
-      dataIndex: "ngayDen",
-      key: "ngayDen",
-      className:
-      'bg-gray-300',
+      title: 'Ngày đến',
+      dataIndex: 'ngayDen',
+      key: 'ngayDen',
+      className: 'bg-gray-300',
     },
     {
-      title: "Ngày đi",
-      dataIndex: "ngayDi",
-      key: "ngayDi",
-      className:
-      'bg-gray-300',
+      title: 'Ngày đi',
+      dataIndex: 'ngayDi',
+      key: 'ngayDi',
+      className: 'bg-gray-300',
     },
     {
-      title: "Số lượng khách",
-      dataIndex: "soLuongKhach",
-      key: "soLuongKhach",
-      className:
-      'bg-gray-300',
+      title: 'Số lượng khách',
+      dataIndex: 'soLuongKhach',
+      key: 'soLuongKhach',
+      className: 'bg-gray-300',
     },
     {
-      title: "Mã người dùng",
-      dataIndex: "maNguoiDung",
-      key: "maNguoiDung",
-      className:
-      'bg-gray-300',
+      title: 'Mã người dùng',
+      dataIndex: 'maNguoiDung',
+      key: 'maNguoiDung',
+      className: 'bg-gray-300',
     },
     {
-      title: "Hành động",
-      key: "action",
-      className:
-      'bg-gray-300',
+      title: 'Hành động',
+      key: 'action',
+      className: 'bg-gray-300',
       render: (text, record) => (
         <Space size="middle">
           <Button type="primary" onClick={() => handleEdit(record)}>
@@ -217,7 +219,11 @@ const BookingManagement = () => {
             cancelText="Hủy"
             disabled={isLoading}
           >
-            <Button type="danger" disabled={isLoading}  className="bg-red-500 hover:bg-red-700">
+            <Button
+              type="danger"
+              disabled={isLoading}
+              className="bg-red-500 hover:bg-red-700"
+            >
               <i className="fas fa-trash-alt"></i> Xóa
             </Button>
           </Popconfirm>
@@ -229,28 +235,32 @@ const BookingManagement = () => {
   return (
     <div>
       <div className="mx-1">
-        Dashboard{" "}
-        <i style={{ color: "#F08080" }} className="fa-solid fa-arrow-right"></i>
-        <span style={{ color: "#F08080" }}> Quản lý Đặt Phòng</span>
+        Dashboard{' '}
+        <i style={{ color: '#F08080' }} className="fa-solid fa-arrow-right"></i>
+        <span style={{ color: '#F08080' }}> Quản lý Đặt Phòng</span>
       </div>
       <div className="flex justify-between">
         <Button
-          style={{ backgroundColor: "#F08080", marginTop: "20px" }}
+          style={{ backgroundColor: '#F08080', marginTop: '20px' }}
           onClick={showModal}
         >
           <i className="fa-solid fa-plus"></i>
           Thêm đặt phòng
         </Button>
         <div className="flex items-center border-2 border-gray-300 rounded-full overflow-hidden w-80">
-          <Input.Search placeholder="Search..." enterButton ={<i className="fa-solid fa-magnifying-glass"></i>} className="ml-3 py-1 px-2 leading-tight focus:outline-none"
+          <Input.Search
+            placeholder="Search..."
+            enterButton={<i className="fa-solid fa-magnifying-glass"></i>}
+            className="ml-3 py-1 px-2 leading-tight focus:outline-none"
             onSearch={handleSearch}
             onChange={handleSearchInputChange}
-            value={searchKeyword} />
+            value={searchKeyword}
+          />
         </div>
       </div>
 
       <Modal
-        title={editingBooking ? "Chỉnh sửa đặt phòng" : "Thêm đặt phòng mới"}
+        title={editingBooking ? 'Chỉnh sửa đặt phòng' : 'Thêm đặt phòng mới'}
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
@@ -271,41 +281,43 @@ const BookingManagement = () => {
           <Form.Item
             label="Mã phòng"
             name="maPhong"
-            rules={[{ required: true, message: "Vui lòng nhập mã phòng!" }]}
+            rules={[{ required: true, message: 'Vui lòng nhập mã phòng!' }]}
           >
-             <Input />
+            <Input />
           </Form.Item>
           <Form.Item
             label="Ngày đến"
             name="ngayDen"
-            rules={[{ required: true, message: "Vui lòng nhập ngày đến!" }]}
+            rules={[{ required: true, message: 'Vui lòng nhập ngày đến!' }]}
           >
             <Input type="date" />
           </Form.Item>
           <Form.Item
             label="Ngày đi"
             name="ngayDi"
-            rules={[{ required: true, message: "Vui lòng nhập ngày đi!" }]}
+            rules={[{ required: true, message: 'Vui lòng nhập ngày đi!' }]}
           >
             <Input type="date" />
           </Form.Item>
           <Form.Item
             label="số lượng khách"
             name="soLuongKhach"
-            rules={[{ required: true, message: "Vui lòng nhập ngày đi!" }]}
+            rules={[{ required: true, message: 'Vui lòng nhập ngày đi!' }]}
           >
             <Input type="number" />
           </Form.Item>
           <Form.Item
             label="Mã người dùng"
             name="maNguoiDung"
-            rules={[{ required: true, message: "Vui lòng nhập mã người dùng!" }]}
+            rules={[
+              { required: true, message: 'Vui lòng nhập mã người dùng!' },
+            ]}
           >
             <Input type="number" />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              {editingBooking ? "Cập nhật" : "Thêm"}
+              {editingBooking ? 'Cập nhật' : 'Thêm'}
             </Button>
           </Form.Item>
         </Form>

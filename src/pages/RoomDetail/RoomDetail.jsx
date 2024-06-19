@@ -10,24 +10,31 @@ import {
   faWifi,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Image, Modal } from 'antd';
+import { Alert, Image, Modal, Rate } from 'antd';
 import { addDays, differenceInDays } from 'date-fns';
+import { useFormik } from 'formik';
 import moment from 'moment';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import * as Yup from 'yup';
 import ListComment from '../../components/ListComment/ListComment';
 import Rating from '../../components/Rating/Rating';
-import { phongServ } from '../../services/phongServ';
-import { viTriServ } from '../../services/viTriServ';
-import convertToSlug from '../../utils/convertToSlug';
 import BookCalendar from '../../layout/BookCalendar/BookCalendar';
-import { binhLuanServ } from '../../services/binhLuanServ';
 import { setNumPeople } from '../../redux/slice/searchSlice';
+import { binhLuanServ } from '../../services/binhLuanServ';
+import { datPhongServ } from '../../services/datPhongServ';
+import { phongServ } from '../../services/phongServ';
+import { userManagement } from '../../services/userManagement';
+import { viTriServ } from '../../services/viTriServ';
+import { handleGetLocalStorage } from '../../utils/util';
+import { AlertContext } from '../../App';
+import { Helmet } from 'react-helmet';
 
 const RoomDetail = () => {
+  const [user, setUser] = useState('');
   const [comments, setComments] = useState([]);
   const [room, setRoom] = useState({});
   const [avgRate, setAvgRate] = useState();
@@ -35,6 +42,13 @@ const RoomDetail = () => {
   const { roomId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { handleAlert } = useContext(AlertContext);
+  useEffect(() => {
+    const token = handleGetLocalStorage('LOGIN_USER');
+    userManagement.getUser(token?.user.id).then((res) => {
+      setUser(res.data.content);
+    });
+  }, []);
   const [bookedRangeDates, setBookedRangeDates] = useState([
     {
       startDate: addDays(new Date(), 1),
@@ -52,6 +66,7 @@ const RoomDetail = () => {
       ),
     [bookedRangeDates]
   );
+
   const [showPopconfirm, setShowPopconfirm] = useState(false);
   const [openBookCalendar, setOpenBookCalendar] = useState(false);
   const [usefulThings, setUsefulThings] = useState([]);
@@ -136,10 +151,90 @@ const RoomDetail = () => {
       })
       .catch((err) => console.log(err));
   }, [roomId]);
+  const handleBookRoom = () => {
+    if (!user) {
+      handleAlert('success', 'Please login!');
+      return;
+    }
+    setShowPopconfirm(true);
+  };
+  const handleConfirmBooking = () => {
+    // Xử lý logic đặt phòng sau khi người dùng xác nhận
+    datPhongServ
+      .datPhong({
+        maPhong: roomId,
+        ngayDen: bookedRangeDates[0].startDate,
+        ngayDi: bookedRangeDates[0].endDate,
+        soLuongKhach: numPeople,
+        maNguoiDung: user.id,
+      })
+      .then((res) => {
+        handleAlert('success', 'Booking success!');
+        setShowPopconfirm(false);
+      })
+      .catch((err) =>
+        // message.error(
+        //   err.response.data.content.replace(/^\w/, (c) => c.toUpperCase())
+        // )
+        console.log(err)
+      );
+  };
+  useEffect(() => {
+    // Kiểm tra xem user có tồn tại không
+    if (user) {
+      // Cập nhật giá trị của maNguoiBinhLuan và token trong formik
+      setFieldValue('maNguoiBinhLuan', `${user.id}`);
+    }
+  }, [user]);
 
+  const {
+    handleSubmit,
+    handleChange,
+    handleBlur,
+    values,
+    errors,
+    touched,
+    setFieldValue,
+    resetForm,
+  } = useFormik({
+    initialValues: {
+      maPhong: roomId,
+      maNguoiBinhLuan: `${user ? user.id : null}`,
+      ngayBinhLuan: new Date(),
+      noiDung: '',
+      saoBinhLuan: 0,
+    },
+
+    onSubmit: async (values) => {
+      await binhLuanServ
+        .postBinhLuan(values, { resetForm })
+        .then((res) => {
+          handleAlert('success', 'Comment success!');
+          binhLuanServ
+            .getBinhLuanById(roomId)
+            .then((res) => setComments(res.data.content.reverse()))
+            .catch((err) => {
+              console.log(err);
+            });
+          resetForm();
+        })
+        .catch((err) =>
+          handleAlert(
+            'error',
+            err.response.data.content.replace(/^\w/, (c) => c.toUpperCase())
+          )
+        );
+    },
+    validationSchema: Yup.object({
+      noiDung: Yup.string().required('Bạn chưa có nội dung đánh giá'),
+    }),
+  });
   return (
     <>
       <div className="pb-24 border-b-2"></div>
+      <Helmet>
+        <title>{room.tenPhong}</title>
+      </Helmet>
       <div className="container lg:px-3 px-10 py-5 space-y-5 ">
         <h2 className=" font-bold text-3xl pt-4"> {room.tenPhong}</h2>
         <div className="grid grid-cols-1 gap-5 items-center justify-start md:flex">
@@ -400,7 +495,10 @@ const RoomDetail = () => {
                       <button
                         onClick={() => {
                           if (numPeople === 1) {
-                            alert('Phải có tối thiểu 1 khách!');
+                            handleAlert(
+                              'warning',
+                              'There must be a minimum of 1 guest!'
+                            );
                           } else if (numPeople > room.khach) {
                             dispatch(setNumPeople(room.khach));
                           } else {
@@ -419,7 +517,7 @@ const RoomDetail = () => {
                       <button
                         onClick={() => {
                           if (numPeople >= room.khach) {
-                            alert('Đã đạt tới số khách tối đa!');
+                            handleAlert('warning', 'Maximum number of guests!');
                             dispatch(setNumPeople(room.khach));
                           } else {
                             dispatch(setNumPeople(numPeople + 1));
@@ -435,7 +533,7 @@ const RoomDetail = () => {
               </div>
               <button
                 className="bg-[#ff5a5f] w-full py-3 rounded-lg font-bold text-white duration-300 hover:bg-[#d14146] "
-                // onClick={handleBookRoom}
+                onClick={handleBookRoom}
               >
                 Reserve
               </button>
@@ -461,7 +559,7 @@ const RoomDetail = () => {
                 <p className="font-bold text-lg">Total before taxes</p>
 
                 <p className="font-mono text-lg font-bold">
-                  {totalNights * room.giaTien + 8}
+                  ${totalNights * room.giaTien + 8}
                 </p>
               </div>
             </div>
@@ -492,7 +590,76 @@ const RoomDetail = () => {
           <div ref={binhLuanRef} className="pb-[30px] "></div>
         )}
         <div className="mb-5 w-full h-px bg-gray-300 "></div>
+        {user === '' ? (
+          <Alert message="You need to login to comment" type="warning" />
+        ) : (
+          <>
+            <form action="" onSubmit={handleSubmit}>
+              <div>
+                <div className="flex ml-3 items-center">
+                  <div className="mr-3">
+                    <img
+                      className="w-10 h-10 rounded-full object-cover"
+                      alt=""
+                      src={
+                        user?.avatar !== ''
+                          ? user?.avatar
+                          : 'https://cdn-icons-png.flaticon.com/512/6596/6596121.png'
+                      }
+                    />
+                  </div>
+                  <div>
+                    <h3 className="font-bold">{user?.name}</h3>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    padding: '0 20px',
+                    marginTop: 15,
+                  }}
+                >
+                  <Rate
+                    value={values.saoBinhLuan}
+                    onBlur={() => handleBlur}
+                    onChange={(value) => {
+                      setFieldValue('saoBinhLuan', value);
+                    }}
+                  />
+                </div>
+                <div className="mt-3 p-3 w-full">
+                  <textarea
+                    id="noiDung"
+                    name="noiDung"
+                    rows={3}
+                    className="border p-2 rounded w-full"
+                    placeholder="Write something..."
+                    value={values.noiDung}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {errors.noiDung && touched.noiDung ? (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.noiDung}
+                    </p>
+                  ) : null}
+                </div>
+                <div className="flex justify-between mx-3">
+                  <div>
+                    <button
+                      type="submit"
+                      className="px-5 py-2 rounded-lg text-white duration-200 bg-[#ff5a5f] hover:bg-[#d14146]"
+                    >
+                      Đánh giá
+                    </button>
+                  </div>
+                  <div></div>
+                </div>
+              </div>
+            </form>
+          </>
+        )}
         <div className="mb-5 w-full h-px bg-gray-300 "></div>
+        <h3 className="font-bold text-xl">Bình luận</h3>
         <h3 className="font-bold text-xl">Comment</h3>
         {comments.length > 0 ? (
           <>
@@ -547,7 +714,7 @@ const RoomDetail = () => {
       >
         <>
           <div className="space-y-5 ">
-            <h5 className="text-center font-bold text-xl">
+            <h5 className="font-bold text-xl">
               Are you sure you want to book this room #{roomId}?
             </h5>
             <p className="">
@@ -560,8 +727,8 @@ const RoomDetail = () => {
             </p>
             <div className="flex justify-end">
               <button
-                className="py-2 rounded-lg px-5 bg-main duration-300 hover:bg-pink-800 text-white font-bold"
-                // onClick={handleConfirmBooking}
+                className="py-2 rounded-lg px-5 bg-main duration-300 bg-[#ff5a5f] hover:bg-[#d14146]  text-white font-bold"
+                onClick={handleConfirmBooking}
               >
                 Confirm
               </button>

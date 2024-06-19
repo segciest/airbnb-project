@@ -1,9 +1,9 @@
-import { format } from 'date-fns';
+import { formatISO, parseISO } from 'date-fns';
+import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
-import './SearchLocation.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -11,10 +11,8 @@ import {
   setLocatedAt,
   setNumPeople,
 } from '../../redux/slice/searchSlice';
-import moment from 'moment';
 import { viTriServ } from '../../services/viTriServ';
-import { formatISO, parseISO } from 'date-fns';
-import convertToSlug from '../../utils/convertToSlug';
+import './SearchLocation.scss';
 
 const SearchLocation = () => {
   const [openDate, setOpenDate] = useState(false);
@@ -207,11 +205,11 @@ const SearchLocation = () => {
             <button
               className="bg-[#FD5B61] hover:bg-[#cc494e] transition-all text-white rounded-full px-3 py-3 flex items-center space-x-2"
               onClick={() => {
-                if (locatedAt) {
+                if (!locatedAt) {
+                  navigate(`/rooms`);
+                } else {
                   navigate(`/rooms/${locatedAt}`);
                   window.location.reload();
-                } else {
-                  navigate(`/rooms`);
                 }
               }}
             >

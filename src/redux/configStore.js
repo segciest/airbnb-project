@@ -11,6 +11,7 @@ import orderedRoomSlice from './slice/orderedRoomSlice';
 
 export const store = configureStore({
   reducer: {
+    userSlice,
     loadingSlice,
     searchSlice,
 
@@ -20,6 +21,5 @@ export const store = configureStore({
     userInfoSlice,
     userOrderRoomSlice,
     orderedRoomSlice,
-
   },
 });
