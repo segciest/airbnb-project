@@ -16,6 +16,36 @@ const SignInPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // const {handleAlert } = useContext(AlertContext)
+
+//   console.log(handleAlert);
+//   const { handleBlur, handleChange, handleSubmit, values, errors, touched} =
+//   useFormik({
+//     initialValues: {
+//       email: '',
+//       password: '',
+//     },
+//     onSubmit: async (values, { resetForm })=> {
+//       console.log(values);
+//       // khi sử dụng async await luôn có một try catch bọc lại để bắt các vấn đề về lỗi
+//       try {
+//         const res = await auth.sigin(values);
+//         console.log(res);
+//         // handleAlert('success', 'Đăng nhập thành công');
+//         navigate(path.homePage);
+//         saveLocalStorage('userData', res.data.content.token);
+//         dispatch(handleGetValueUserData(res.data.content));
+//         resetForm();
+//       } catch (error) {
+//         console.log(error);
+//         // handleAlert('error', error.response.data.content);
+//       }
+//     },
+//     validationSchema: Yup.object({
+//       email: Yup.string().required('Vui lòng không bỏ trống'),
+//       password: Yup.string().required('Vui lòng không bỏ trống'),
+//     }),
+//   });
+
   //   console.log(handleAlert);
   const { handleBlur, handleChange, handleSubmit, values, errors, touched } =
     useFormik({
@@ -45,6 +75,7 @@ const SignInPage = () => {
         password: Yup.string().required('Vui lòng không bỏ trống'),
       }),
     });
+
   return (
     <div className="formContainer signIn">
       <form onSubmit={handleSubmit}>

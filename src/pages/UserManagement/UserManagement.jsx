@@ -13,6 +13,7 @@ import {
 } from 'antd';
 // import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { quanLyUser } from '../../services/quanLyUser'; // Giả sử bạn có service này để gọi API
+import { notification } from 'antd';
 
 const UserManagement = () => {
   const [userList, setUserList] = useState([]); // Danh sách người dùng hiện tại
@@ -23,9 +24,9 @@ const UserManagement = () => {
   const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
   const [pageSize, setPageSize] = useState(10); // Số lượng phần tử trên mỗi trang
   const [totalUsers, setTotalUsers] = useState(0); // Tổng số người dùng
-  const [userData, setUserData] = useState(null); // State để lưu trữ dữ liệu từ API
+  // const [userData, setUserData] = useState(null); // State để lưu trữ dữ liệu từ API
   const [searchKeyword, setSearchKeyword] = useState(''); // Từ khóa tìm kiếm
-  console.log(userData);
+  // console.log(userData);
   // Hiển thị modal
   const showModal = () => {
     setIsModalVisible(true);
@@ -42,6 +43,50 @@ const UserManagement = () => {
     setEditingUser(null);
   };
 
+  // Hàm hiển thị thông báo
+  const openNotificationWithIcon = (type, message, description) => {
+    notification[type]({
+      message: message,
+      description: description,
+    });
+  };
+
+    // Hàm lấy dữ liệu người dùng từ API
+    const fetchUserData = async (keyword = '') => {
+      setIsLoading(true);
+      try {
+        const response = await quanLyUser.timNguoiDung(keyword);
+        const result = response.data.content.map((item, i) => ({
+          ...item,
+          key: i,
+        }));
+        setUserList(result);
+        setTotalUsers(response.data.content.totalRow);
+        openNotificationWithIcon('success', 'tìm thấy người dùng');
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+       
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+     // Lấy dữ liệu người dùng khi component được mount
+    useEffect(() => {
+      fetchUserData();
+    }, []);
+
+  // Hàm xử lý thay đổi input tìm kiếm
+  const handleSearchInputChange = (event) => {
+    setSearchKeyword(event.target.value);
+  };
+
+  // Hàm xử lý khi nhấn nút tìm kiếm
+  const handleSearch = () => {
+    fetchUserData(searchKeyword);
+    setCurrentPage(1); // Reset về trang đầu tiên khi tìm kiếm
+  };
+  
   // Hàm gọi API để lấy danh sách người dùng theo trang và từ khóa tìm kiếm
   useEffect(() => {
     const fetchUsers = () => {
@@ -83,8 +128,8 @@ const UserManagement = () => {
     setCurrentPage(1); // Reset về trang 1 khi thay đổi pageSize
   };
 
-  // Xử lý khi hoàn tất form
-  const onFinish = (values) => {
+  // Xử lý khi gửi form thêm/chỉnh sửa người dùng
+const onFinish = (values) => {
     // Sửa người dùng
     if (editingUser) {
       quanLyUser
@@ -92,6 +137,7 @@ const UserManagement = () => {
         .then((response) => {
           console.log('User updated:', response);
           setCurrentPage(1); // Reset về trang 1 để lấy dữ liệu mới
+          openNotificationWithIcon('success', 'Thành công', 'Người dùng đã được cập nhật');
         })
         .then(() => {
           setIsModalVisible(false);
@@ -99,6 +145,7 @@ const UserManagement = () => {
         })
         .catch((error) => {
           console.error('Error:', error);
+          openNotificationWithIcon('error', 'Lỗi', 'Cập nhật người dùng thất bại');
         });
     } else {
       // Thêm người dùng mới
@@ -107,15 +154,18 @@ const UserManagement = () => {
         .then((response) => {
           console.log('User added:', response);
           setCurrentPage(1); // Reset về trang 1 để lấy dữ liệu mới
+          openNotificationWithIcon('success', 'Thành công', 'Người dùng đã được thêm');
         })
         .then(() => {
           setIsModalVisible(false);
         })
         .catch((error) => {
           console.error('Error:', error);
+          openNotificationWithIcon('error', 'Lỗi', 'Thêm người dùng thất bại');
         });
     }
   };
+  
 
   // Xử lý khi bấm nút chỉnh sửa người dùng (hiện modal lên)
   const handleEdit = (user) => {
@@ -123,85 +173,59 @@ const UserManagement = () => {
     setIsModalVisible(true);
   };
 
+  
   // Xử lý khi bấm nút xóa người dùng
+
   const handleDelete = (id) => {
     setIsLoading(true);
-
+  
     quanLyUser
       .xoaNguoiDung(id)
       .then((response) => {
         console.log('User deleted:', response);
-        // setCurrentPage(1); // Reset về trang 1 để lấy dữ liệu mới
+        openNotificationWithIcon('success', 'Thành công', 'Người dùng đã được xóa');
+        setCurrentPage(1); // Reset về trang 1 để lấy dữ liệu mới
       })
       .catch((error) => {
         console.error('Error:', error);
+        openNotificationWithIcon('error', 'Lỗi', 'Xóa người dùng thất bại');
       })
       .finally(() => {
         setIsLoading(false);
       });
   };
+  
 
-  // Xử lý tìm kiếm
-  const handleSearch = (value) => {
-    setSearchKeyword(value);
-    setCurrentPage(1); // Reset về trang 1 khi thực hiện tìm kiếm
-  };
+ 
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await quanLyUser.timNguoiDung(); // Gọi API
-        // console.log('Response:', response);
-        setUserData(response.data.content); // Lưu dữ liệu từ API vào state
-        console.log('User data:', response.data.content);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
-    fetchUserData(); // Gọi hàm fetchUserData khi component được mount
-  }, []); // Chỉ gọi lại useEffect khi data thay đổi
-
-  // const showDeleteConfirm = (id) => {
-  //   Modal.confirm({
-  //     title: 'Bạn có chắc muốn xóa người dùng này?',
-  //     icon: <ExclamationCircleOutlined />,
-  //     okText: 'Đồng ý',
-  //     okType: 'danger',
-  //     cancelText: 'Hủy',
-  //     onOk() {
-  //       handleDelete(id);
-  //     },
-  //   });
-  // };
-
+ // Định nghĩa các cột của bảng
   const columns = [
     {
       title: 'Mã số',
       dataIndex: 'id',
       key: 'id',
       className:
-        'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-out',
+        'bg-gray-300',
     },
     {
       title: 'Tên',
       dataIndex: 'name',
       key: 'name',
       className:
-        'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-out',
+        'bg-gray-300',
     },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
       className:
-        'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-out',
+        'bg-gray-300',
     },
     {
       title: 'Hành động',
       key: 'action',
       className:
-        'bg-gradient-to-r from-pink-500 to-yellow-500 transition duration-500 ease-in-out',
+        'bg-gray-300',
       render: (text, record) => (
         <Space size="middle">
           <Button
@@ -248,17 +272,14 @@ const UserManagement = () => {
         </Button>
         <div className="flex items-center border-2 border-gray-300 rounded-full overflow-hidden w-80">
         <Input.Search
-  placeholder="Tìm kiếm..."
-  enterButton={<i className="fa-solid fa-magnifying-glass"></i>}
-  className="ml-3 py-1 px-2 leading-tight focus:outline-none"
-  onSearch={(value) => {
-    handleSearch(value); // Gọi hàm handleSearch với giá trị nhập vào
-  }}
-  value={searchKeyword} // Sử dụng searchKeyword làm giá trị của input
-  
-  onChange={(e) => setSearchKeyword(e.target.value)} // Cập nhật searchKeyword khi người dùng nhập vào
+            placeholder="Tìm kiếm..."
+            enterButton={<i className="fa-solid fa-magnifying-glass"></i>}
+            className="ml-3 py-1 px-2 leading-tight focus:outline-none"
+            onSearch={handleSearch}
+            onChange={handleSearchInputChange}
+            value={searchKeyword}
+          />
 
-/>
 
 
         </div>
@@ -343,13 +364,14 @@ const UserManagement = () => {
             </>
           ) : (
             <Pagination
-              // showQuickJumper
+              
               current={currentPage}
               total={totalUsers}
               onChange={onChange}
               onShowSizeChange={onShowSizeChange}
-              // pageSizeOptions={['5', '10', '20', '50']}
-              // pageSize={pageSize}
+              
+             
+            showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
             />
           )}
         </div>

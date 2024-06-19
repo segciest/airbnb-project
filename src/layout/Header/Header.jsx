@@ -1,9 +1,13 @@
 import 'animate.css';
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { path } from '../../common/path';
 import './Header.scss';
+
+import { useSelector } from 'react-redux';
+
 import { handleGetLocalStorage } from '../../utils/util';
+
 
 const Header = () => {
   // Lấy dữ liệu người dùng
@@ -11,7 +15,8 @@ const Header = () => {
   console.log(user);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false);
-
+  // hàm lấy dữ liệu từ redux đưa vào để thay đổi người udngf khi đăng nhập
+  const { user } = useSelector((state) => state.userSlice);
   const toggleMenu = () => {
     setIsMenuVisible(!isMenuVisible);
   };
@@ -19,6 +24,8 @@ const Header = () => {
   const toggleMobileMenu = () => {
     setIsMobileMenuVisible(!isMobileMenuVisible);
   };
+
+
 
   return (
     <header className="header bg-white top-0 left-0 w-full z-[9999] fixed p-2 lg:p-0">
@@ -101,6 +108,41 @@ const Header = () => {
                 isMenuVisible ? 'visible' : ''
               }`}
             >
+
+//               <ul>
+//                {
+//                 user ? (<li>
+//                  Xin chào {user.user.name}
+//                 </li>) : (
+//                   <li>
+//                   <NavLink to="/Login-register" >
+//                  Login - Register
+//                   </NavLink>
+//                 </li>
+//                 )
+//                }
+//                <li>
+//                 <a href="#0">Profile</a>
+//                </li>
+//                {/* <li>
+//                   <a href="#0">Sign Up</a>
+//                 </li>
+//                 <li>
+//                   <a href="#0">Login</a>
+//                 </li> */}
+              
+//                 <hr />
+//                 <li>
+//                   <a href="#0">Gift card</a>
+//                 </li>
+//                 <li>
+//                   <a href="#0">Airbnb your home</a>
+//                 </li>
+//                 <li>
+//                   <a href="#0">Help Center</a>
+//                 </li>
+//               </ul>
+
               {user ? (
                 <ul>
                   <li>
@@ -156,6 +198,7 @@ const Header = () => {
                   </li>
                 </ul>
               )}
+
             </div>
           </div>
         </div>
