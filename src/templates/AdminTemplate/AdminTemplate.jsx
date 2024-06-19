@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import  {  useState } from 'react';
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -10,6 +10,7 @@ import {
 import { NavLink, Outlet } from 'react-router-dom';
 import './AdminTemplate.scss';
 import { path } from '../../common/path';
+// import { handleGetLocalStorage } from '../../utils/util';
 // import logo123 from '../../image/logo123.png';
 
   const { Header, Sider, Content } = Layout;
@@ -39,7 +40,17 @@ const AdminTemplate = () => {
     const {
       token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
-    
+    // useEffect(() => {
+    //   const dataUser = handleGetLocalStorage("userData");
+    //   if(!dataUser) {
+    //     window.location.href = "https://google.com";
+    //   } else{
+    //     if(dataUser.role!== "ADMIN") {
+    //       window.location.href = "/admin";
+    //     } 
+    //   }
+      
+    // },[]);
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -83,10 +94,13 @@ const AdminTemplate = () => {
   <div style={{ marginRight: '10px' }}>
     Admin
   </div>
+  <NavLink to="/Login-register" className=" flex items-center">
   <button className='hover:bg-red-950' style={{padding: '10px' }}
-  > đăng xuất
+  >
+  đăng xuất
     <i className="fa fa-sign-out-alt" /> {/* This is a Font Awesome icon */}
   </button>
+  </NavLink>
 </div>
 
           </Header>

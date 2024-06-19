@@ -32,7 +32,7 @@ const SignInPage = () => {
         console.log(res);
         // handleAlert('success', 'Đăng nhập thành công');
         navigate(path.homePage);
-        saveLocalStorage('userData', res.data.content.tonken);
+        saveLocalStorage('userData', res.data.content.token);
         dispatch(handleGetValueUserData(res.data.content));
         resetForm();
       } catch (error) {
