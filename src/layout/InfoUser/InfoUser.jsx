@@ -113,7 +113,10 @@ const InfoUser = () => {
         data-aos="zoom-in-up"
         data-aos-duration="1500"
       >
-        <h1 className="text-3xl font-bold text-[#ff5a5f] py-5">
+        <h1
+          style={{ margin: '0 auto' }}
+          className="text-3xl font-bold text-[#ff5a5f] py-5"
+        >
           <span>
             <i
               className="fa-brands fa-airbnb"
@@ -174,7 +177,13 @@ const InfoUser = () => {
               </div>
             </div>
           </Modal>
-          <h2 className="text-lg font-medium mt-4 flex items-center justify-center">
+          <h2
+            style={{
+              fontSize: '20px',
+              lineHeight: '28px',
+            }}
+            className="text-lg font-medium mt-4 flex items-center justify-center"
+          >
             <svg
               className="w-5 h-5 text-green-500 mr-1"
               fill="currentColor"
@@ -188,7 +197,13 @@ const InfoUser = () => {
             </svg>
             Xác minh danh tính
           </h2>
-          <p className="text-sm text-gray-600 mt-2">
+          <p
+            style={{
+              fontSize: '14px',
+              lineHeight: '22px',
+            }}
+            className="text-sm text-gray-600 mt-2"
+          >
             Xác minh danh tính của bạn với huy hiệu xác minh danh tính.
           </p>
           <button className="bg-blue-500 text-white py-2 px-4 rounded mt-4">
@@ -197,16 +212,42 @@ const InfoUser = () => {
           <div className="border-t my-4"></div>
           <div className="text-left">
             {userInfo.email != null ? (
-              <h3 className="text-base font-medium">ADMIN ĐÃ XÁC NHẬN</h3>
+              <h3
+                style={{ fontSize: '20px', lineHeight: '28px' }}
+                className="text-base font-medium"
+              >
+                ADMIN ĐÃ XÁC NHẬN
+              </h3>
             ) : (
-              <h3 className="text-base font-medium">VUI LÒNG XÁC NHẬN</h3>
+              <h3
+                style={{ fontSize: '20px', lineHeight: '28px' }}
+                className="text-base font-medium"
+              >
+                VUI LÒNG XÁC NHẬN
+              </h3>
             )}
-            <p className="text-green-500 mt-1">✓ Địa chỉ email</p>
+            <p
+              style={{
+                fontSize: '14px',
+                lineHeight: '22px',
+              }}
+              className="text-green-500 mt-1"
+            >
+              ✓ Địa chỉ email
+            </p>
           </div>
         </div>
         {/* extra */}
-        <div style={{ width: '400px' }} className="layout2">
-          <h1 className="mb-3">Xin chào ! {userInfo.name}</h1>
+        <div className="layout2">
+          <h1
+            style={{
+              fontSize: '20px',
+              lineHeight: '28px',
+            }}
+            className="mb-3"
+          >
+            Xin chào ! {userInfo.name}
+          </h1>
           {/* chỉnh sửa hồ sơ */}
           <Button className="mb-3" type="primary" onClick={showModal2}>
             Cập nhật hồ sơ
@@ -221,7 +262,15 @@ const InfoUser = () => {
           </Modal>
           {/* Phòng đã thuê */}
           <div>
-            <h1 className="mb-3">Phòng đã thuê</h1>
+            <h1
+              style={{
+                fontSize: '24px',
+                lineHeight: '32px',
+              }}
+              className="mb-3"
+            >
+              Phòng đã thuê
+            </h1>
             {rooms != '' ? (
               <div className="listRoom">
                 {rooms?.map((item, index) => {
