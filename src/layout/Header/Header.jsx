@@ -138,6 +138,9 @@ const Header = () => {
                     )}
                   </li>
                   <li>
+                    <a href="/chat">Chat</a>
+                  </li>
+                  <li>
                     <a href="#0">Setting</a>
                   </li>
                   <li>
