@@ -265,11 +265,17 @@
 .containerLayout.active .toggleRight {
   transform: translateX(200%);
 }
+@media (max-width: 390px) {
+  .containerLayout{
+   width: 100%;
+   overflow: auto;
+  }}
 @media (max-width: 576px) {
  .containerLayout{
   width: 100%;
   overflow: auto;
  }
+
 }
 @media (max-width: 768px) {
   .containerLayout{

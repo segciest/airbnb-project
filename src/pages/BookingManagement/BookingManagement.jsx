@@ -239,7 +239,7 @@ const BookingManagement = () => {
         <i style={{ color: '#F08080' }} className="fa-solid fa-arrow-right"></i>
         <span style={{ color: '#F08080' }}> Quản lý Đặt Phòng</span>
       </div>
-      <div className="flex justify-between">
+      <div className="flex flex-col lg:flex-row lg:justify-between">
         <Button
           style={{ backgroundColor: '#F08080', marginTop: '20px' }}
           onClick={showModal}
@@ -247,7 +247,7 @@ const BookingManagement = () => {
           <i className="fa-solid fa-plus"></i>
           Thêm đặt phòng
         </Button>
-        <div className="flex items-center border-2 border-gray-300 rounded-full overflow-hidden w-80">
+        <div className="flex items-center border-2 border-gray-300 rounded-full overflow-hidden w-full lg:w-80 mt-3 lg:mt-0 lg:ml-3">
           <Input.Search
             placeholder="Search..."
             enterButton={<i className="fa-solid fa-magnifying-glass"></i>}

@@ -1,5 +1,46 @@
-.ant-table-row {
-    &:hover {
-        background-color: violet !important;
+// Define your breakpoints
+$breakpoints: (
+  'sm': 480px,
+  'md': 768px,
+  'lg': 1024px
+);
+
+// Mixin for media queries
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
     }
+  } @else {
+    @warn "Unknown breakpoint: #{$breakpoint}.";
+  }
 }
+
+// Usage
+.my-element {
+  width: 100%;
+
+  @include respond-to('sm') {
+    max-width: 50%;
+  }
+
+  @include respond-to('md') {
+    width: 60%;
+  }
+
+  @include respond-to('lg') {
+    width: 40%;
+  }
+}
+// Apply responsive styles to your div
+.flex-container {
+    @include respond-to('xs') {
+      flex-direction: column;
+      align-items: flex-start;
+  
+      .search-container {
+        width: 100%; // Full width on extra small screens
+        margin-top: 20px; // Add space between the button and search input
+      }
+    }
+  }

@@ -66,7 +66,8 @@ const SignupPage = () => {
     });
 
   return (
-    <div className="formContainer signUp">
+    <div className="container mx-auto w-full px-4">
+    <div className="formContainer signUp ">
       <form onSubmit={handleSubmit}>
         <h1>Create Account</h1>
         <div className="formIcon">
@@ -87,7 +88,7 @@ const SignupPage = () => {
           </a>
         </div>
         <span>or use your email for registeration</span>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full text-black">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full text-black ">
           <div>
             <InputText
               label="Tài khoản"
@@ -142,6 +143,7 @@ const SignupPage = () => {
           Sign Up{' '}
         </button>
       </form>
+    </div>
     </div>
   );
 };
