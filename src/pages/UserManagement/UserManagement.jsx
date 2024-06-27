@@ -227,9 +227,12 @@ const UserManagement = () => {
     {
       title: 'Hành động',
       key: 'action',
-      className: 'bg-gray-300',
+      className: 'bg-gray-300 sm:w-16',
+     
+    
       render: (text, record) => (
-        <Space size="middle">
+        <Space size="middle" className="text-center">
+        <div className="flex justify-center items-center space-x-2">
           <Button
             type="primary"
             className="hover:bg-blue-700"
@@ -252,7 +255,9 @@ const UserManagement = () => {
               <i className="fas fa-trash-alt"></i> Xóa
             </Button>
           </Popconfirm>
-        </Space>
+        </div>
+      </Space>
+      
       ),
     },
   ];
@@ -264,25 +269,27 @@ const UserManagement = () => {
         <i style={{ color: '#F08080' }} className="fa-solid fa-arrow-right"></i>
         <span style={{ color: '#F08080' }}> Quản lý Người Dùng</span>
       </div>
-      <div className="flex justify-between">
-        <Button
-          style={{ backgroundColor: '#F08080', marginTop: '20px' }}
-          onClick={showModal}
-        >
-          <i className="fa-solid fa-user-plus"></i>
-          Thêm thành viên
-        </Button>
-        <div className="flex items-center border-2 border-gray-300 rounded-full overflow-hidden w-80">
-          <Input.Search
-            placeholder="Tìm kiếm..."
-            enterButton={<i className="fa-solid fa-magnifying-glass"></i>}
-            className="ml-3 py-1 px-2 leading-tight focus:outline-none"
-            onSearch={handleSearch}
-            onChange={handleSearchInputChange}
-            value={searchKeyword}
-          />
-        </div>
-      </div>
+    <div className="flex flex-col lg:flex-row lg:justify-between">
+  <Button
+    style={{ backgroundColor: '#F08080', marginTop: '20px' }}
+    onClick={showModal}
+    // className="flex items-center px-3 py-2 rounded-lg text-black lg:mt-0"
+  >
+    <i className="fas fa-user-plus mr-2"></i>
+    Thêm thành viên
+  </Button>
+  <div className="flex items-center border-2 border-gray-300 rounded-full overflow-hidden w-full lg:w-80 mt-3 lg:mt-0 lg:ml-3">
+    <Input.Search
+      placeholder="Tìm kiếm..."
+      enterButton={<i className="fas fa-search"></i>}
+      className="py-1 px-2 leading-tight focus:outline-none w-full"
+      onSearch={handleSearch}
+      onChange={handleSearchInputChange}
+      value={searchKeyword}
+    />
+  </div>
+</div>
+
 
       <Modal
         title={editingUser ? 'Sửa thông tin thành viên' : 'Thêm thành viên mới'}
